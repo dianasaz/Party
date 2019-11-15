@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Task {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
@@ -32,7 +32,7 @@ public class Task {
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_bean_id")
     private Party party;
 
     @Column (name = "money")

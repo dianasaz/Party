@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Product {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH,
             CascadeType.MERGE,
@@ -25,7 +25,7 @@ public class Product {
             CascadeType.MERGE,
             CascadeType.PERSIST,
             CascadeType.REFRESH})
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_bean_id")
     private Party party;
 
     @Column (name = "price")

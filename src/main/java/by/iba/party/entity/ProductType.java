@@ -13,7 +13,7 @@ import java.util.List;
 public class ProductType {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column (name = "value")
     private String value;

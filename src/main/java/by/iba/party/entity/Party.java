@@ -4,16 +4,17 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Data
 @ToString
 @Entity
-@Table (name = "party")
+@Table
 public class Party {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<User> users;
@@ -24,6 +25,12 @@ public class Party {
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Product> products;
 
-    //todo list products. Question : what is the relation between them
+    @Column (name = "address")
+    private String address;
 
+    @Column (name = "date")
+    private Date date;
+
+    @Column (name = "number_of_people")
+    private Integer numberOfPeople;
 }
