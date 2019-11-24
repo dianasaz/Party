@@ -4,6 +4,8 @@ import by.iba.party.entity.Party;
 import by.iba.party.entity.PartyStatus;
 import by.iba.party.repository.PartyRepository;
 import by.iba.party.service.PartyService;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class PartyServiceImpl implements PartyService {
     private final PartyRepository partyRepository;
 
@@ -57,6 +60,7 @@ public class PartyServiceImpl implements PartyService {
 
     @Override
     public void deleteById(Integer id) {
+        log.log(Level.INFO, "party with id = " + id + " was deleted");
         partyRepository.deleteById(id);
     }
 }

@@ -13,5 +13,5 @@ public interface ProductService extends Service<Product>{
 
     List<Product> findAllByType(ProductType type);
 
-    List<Product> findAllByParty(Party party);
+   // List<Product> findAllByParty(Party party);
 }

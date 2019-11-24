@@ -16,5 +16,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findAllByType(ProductType type);
 
-    List<Product> findAllByParty(Party party);
+  //  List<Product> findAllByParty(Party party);
 }

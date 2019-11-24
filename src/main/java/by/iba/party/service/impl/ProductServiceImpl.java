@@ -35,10 +35,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAllByType(type);
     }
 
-    @Override
-    public List<Product> findAllByParty(Party party) {
-        return productRepository.findAllByParty(party);
-    }
+//    @Override
+//    public List<Product> findAllByParty(Party party) {
+//        return productRepository.findAllByParty(party);
+//    }
 
     @Override
     public Product save(Product entity) {

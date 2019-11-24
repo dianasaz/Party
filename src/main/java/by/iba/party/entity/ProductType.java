@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
@@ -15,9 +16,11 @@ public class ProductType {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank
     @Column (name = "value")
     private String value;
 
+    @NotBlank
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
 }
