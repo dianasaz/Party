@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -20,25 +19,23 @@ public class Party {
     @Column (name = "name")
     private String name;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,  CascadeType.PERSIST})
+    //todo
+    @ManyToMany()
     private List<User> users;
 
-    @NotBlank
     @Column(name = "status")
+    @Enumerated(EnumType.ORDINAL)
     private PartyStatus status;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REMOVE})
+    @OneToMany
     private List<Product> products;
 
-    @NotBlank
     @Column (name = "address")
     private String address;
 
-    @NotBlank
     @Column (name = "date")
     private Date date;
 
-    @NotBlank
     @Column (name = "number_of_people")
     private Integer numberOfPeople;
 }

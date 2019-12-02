@@ -3,11 +3,10 @@ package by.iba.party.controller.user;
 import by.iba.party.entity.User;
 import by.iba.party.service.UserService;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Level;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Level;
 
 @RestController
 @Log4j2
@@ -36,7 +35,7 @@ public class UserController {
     public void update(@PathVariable Integer id, User user) {
         user.setId(id);
         userService.save(user);
-        log.log(Level.INFO, "User was saved");
+   //     log..log(Level.INFO, "User was saved");
     }
 
     @DeleteMapping(value = "/{id}")

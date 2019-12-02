@@ -60,7 +60,7 @@ public class PartyServiceImpl implements PartyService {
 
     @Override
     public void deleteById(Integer id) {
-        log.log(Level.INFO, "party with id = " + id + " was deleted");
+      //  log.log(Level.INFO, "party with id = " + id + " was deleted");
         partyRepository.deleteById(id);
     }
 }

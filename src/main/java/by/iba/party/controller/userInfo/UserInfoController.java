@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping (value = "/user_info")
+@RequestMapping (value = "/user-info")
 public class UserInfoController {
     private final UserInfoService userInfoService;
 

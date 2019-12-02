@@ -19,8 +19,13 @@ public class PartyController {
     }
 
     @GetMapping(value = "/all")
-    public List<Party> allProductTypes() {
+    public List<Party> allParties() {
         return partyService.findAll();
+    }
+
+    @GetMapping (value = "/by-address")
+    public List<Party> allPartiesByAddress(@RequestBody String address){
+        return partyService.findAllByAddressContains(address);
     }
 
     @GetMapping(value = "/{id}")
