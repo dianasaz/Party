@@ -16,7 +16,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank
     @Column(name = "login")
     private String login;
 
@@ -24,7 +23,6 @@ public class User {
     @Enumerated (EnumType.ORDINAL)
     private UserRole role;
 
-    @NotBlank
     @Column(name = "password")
     private String password;
 

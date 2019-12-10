@@ -4,8 +4,6 @@ import by.iba.party.entity.User;
 import by.iba.party.repository.UserRepository;
 import by.iba.party.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

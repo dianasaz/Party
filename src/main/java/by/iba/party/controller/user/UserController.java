@@ -3,6 +3,7 @@ package by.iba.party.controller.user;
 import by.iba.party.entity.User;
 import by.iba.party.service.UserService;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/all")
+    @ResponseStatus(HttpStatus.OK)
     public List<User> allUsers() {
         return userService.findAll();
     }
