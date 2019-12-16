@@ -30,6 +30,14 @@ public class UserController {
         return userService.findById(id).orElse(new User());
     }
 
+    @PostMapping(value = "/login")
+    public User getByLoginAndPassword(@RequestBody User user) {
+        User u = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
+       // if (u.getLogin() != null ) System.out.println("yhy");
+        return u;
+    }
+
+
     //post создание сущностей
     //put обновлять вроде
     //REQUEST BODY для добавления новых (метод принимает @RequestBody Mentor mentor)
@@ -37,7 +45,7 @@ public class UserController {
     public void update(@PathVariable Integer id, User user) {
         user.setId(id);
         userService.save(user);
-   //     log..log(Level.INFO, "User was saved");
+        //     log..log(Level.INFO, "User was saved");
     }
 
     @DeleteMapping(value = "/{id}")
@@ -46,8 +54,11 @@ public class UserController {
     }
 
     @PostMapping(value = "/add")
-    public void addNew(@RequestBody User User) {
-        userService.save(User);
-    }
+    public void addNew(@RequestBody User user) {
+        if (!userService.existsByLogin(user.getLogin())) {
+            userService.save(user);
+        }
 
+    }
 }
+

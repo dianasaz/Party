@@ -13,7 +13,6 @@ create table party
     address          varchar(255) not null,
     date             datetime     not null,
     name             varchar(255) not null,
-    number_of_people int          not null,
     status           int          not null
 )
     ENGINE = INNODB;
@@ -67,8 +66,7 @@ create table user
     id       int auto_increment
         primary key,
     login    varchar(255) not null,
-    password varchar(255) not null,
-    role     int          not null
+    password varchar(255) not null
 )
     ENGINE = INNODB;
 
@@ -82,13 +80,13 @@ create table user_info
 
 ALTER TABLE party_products
   ADD FOREIGN KEY (party_id) REFERENCES party (id)
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON UPDATE cascade
+    ON DELETE cascade ;
 
 ALTER TABLE party_products
   ADD FOREIGN KEY (products_id) REFERENCES product (id)
-    ON UPDATE NO ACTION
-    ON DELETE NO ACTION;
+    ON UPDATE cascade
+    ON DELETE cascade ;
 
 ALTER TABLE party_users
   ADD FOREIGN KEY (party_id) REFERENCES party (id)
@@ -96,7 +94,7 @@ ALTER TABLE party_users
     ON DELETE NO ACTION;
 
 ALTER TABLE party_users
-  ADD FOREIGN KEY (users_id) REFERENCES user (id)
+  ADD FOREIGN KEY (users_id) REFERENCES user_info (id)
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 

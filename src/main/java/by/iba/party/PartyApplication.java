@@ -22,4 +22,5 @@ public class PartyApplication {
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
+
 }

@@ -1,5 +1,7 @@
 package by.iba.party.repository;
 
+import by.iba.party.entity.Party;
+import by.iba.party.entity.PartyStatus;
 import by.iba.party.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,12 +18,21 @@ import static org.junit.Assert.*;
 public class UserRepositoryTest {
     @Autowired
     private UserRepository repository;
+    private PartyRepository pr;
 
     @Test
-    public void test(){
+    public void test() {
         User user = new User();
         user.setLogin("OLAKO");
         user.setPassword("1073277");
         user.setId(repository.save(user).getId());
+
+        Party p = new Party();
+        p.setAddress("abysa");
+        p.setName("snja");
+        p.setStatus(PartyStatus.CREATED);
+
+        pr.findProductsForParty(9);
+        System.out.println(pr.findProductsForParty(9));
     }
 }

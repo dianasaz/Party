@@ -2,6 +2,7 @@ package by.iba.party.service.impl;
 
 import by.iba.party.entity.Party;
 import by.iba.party.entity.PartyStatus;
+import by.iba.party.entity.Product;
 import by.iba.party.repository.PartyRepository;
 import by.iba.party.service.PartyService;
 import lombok.extern.log4j.Log4j2;
@@ -36,6 +37,30 @@ public class PartyServiceImpl implements PartyService {
     @Override
     public List<Party> findAllByAddressContains(String address) {
         return partyRepository.findAllByAddressContains(address);
+    }
+
+    @Override
+    public List<Integer> findProductsForParty(Integer id) {
+        return partyRepository.findProductsForParty(id);
+    }
+
+    @Override
+    public void addProductForParty(Party party, Product product) {
+       // partyRepository.addProductForParty(party, product);
+        party.getProducts().add(product);
+        partyRepository.save(party);
+    }
+
+    @Override
+    public void deleteProductForParty(Party party, Product product) {
+        // partyRepository.addProductForParty(party, product);
+        party.getProducts().remove(product);
+        partyRepository.save(party);
+    }
+
+    @Override
+    public Integer findCountProductsInParty(Party party, Product product) {
+        return partyRepository.findCountProductsInParty(party.getId(), product.getId());
     }
 
     @Override

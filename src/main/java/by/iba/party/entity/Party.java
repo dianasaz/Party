@@ -20,14 +20,18 @@ public class Party {
     private String name;
 
     //todo
-    @ManyToMany()
-    private List<User> users;
+    @ManyToMany
+    @JoinTable(name = "party_users",
+            joinColumns = {@JoinColumn(name = "party_id")}, inverseJoinColumns = {@JoinColumn(name = "users_id")})
+    private List<UserInfo> users;
 
     @Column(name = "status")
     @Enumerated(EnumType.ORDINAL)
     private PartyStatus status;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "party_products",
+     joinColumns = {@JoinColumn(name = "party_id")}, inverseJoinColumns = {@JoinColumn(name = "products_id")})
     private List<Product> products;
 
     @Column (name = "address")
@@ -36,6 +40,4 @@ public class Party {
     @Column (name = "date")
     private Date date;
 
-    @Column (name = "number_of_people")
-    private Integer numberOfPeople;
 }

@@ -19,10 +19,6 @@ public class User {
     @Column(name = "login")
     private String login;
 
-    @Column
-    @Enumerated (EnumType.ORDINAL)
-    private UserRole role;
-
     @Column(name = "password")
     private String password;
 
