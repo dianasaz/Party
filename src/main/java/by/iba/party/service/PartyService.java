@@ -1,8 +1,6 @@
 package by.iba.party.service;
 
-import by.iba.party.entity.Party;
-import by.iba.party.entity.PartyStatus;
-import by.iba.party.entity.Product;
+import by.iba.party.entity.*;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +17,10 @@ public interface PartyService extends Service<Party> {
     void addProductForParty(Party party, Product product);
 
     void deleteProductForParty(Party party, Product product);
+
+    void addUserToParty(Party party, User user);
+
+    boolean checkUserToParty(Party party, User user);
 
     Integer findCountProductsInParty(Party party, Product product);
 

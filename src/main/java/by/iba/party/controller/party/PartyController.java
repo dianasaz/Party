@@ -2,13 +2,13 @@ package by.iba.party.controller.party;
 
 import by.iba.party.entity.Party;
 import by.iba.party.entity.Product;
+import by.iba.party.entity.User;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,8 +85,25 @@ public class PartyController {
 
     @PostMapping(value = "/add")
     @ResponseStatus(HttpStatus.OK)
-    public void addNew(@RequestBody Party party) {
+    public Party addNew(@RequestBody Party party) {
         partyService.save(party);
+        return party;
     }
 
+    @PostMapping(value = "/{party_id}/add/user/{user_id}")
+    public void addUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User userInfo){
+        partyService.addUserToParty(party, userInfo);
+    }
+
+    @GetMapping(value = "/{party_id}/check/user/{user_id}")
+    public User checkUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User user){
+        if (partyService.checkUserToParty(party, user)) return user;
+        else return null;
+    }
+
+    @GetMapping(value = "/{party_id}/users")
+    public List<User> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Party party){
+        return partyService.findById(party.getId()).get().getUsers();
+
+    }
 }

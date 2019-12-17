@@ -7,22 +7,21 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@ToString
 @Table (name = "task")
 public class Task {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_info_id")
-    private UserInfo userInfo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "party_id")
     private Party party;
 
@@ -33,4 +32,13 @@ public class Task {
     @Column (name = "task_status")
     @Enumerated(EnumType.ORDINAL)
     private TaskStatus status;
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", money=" + money +
+                ", status=" + status +
+                '}';
+    }
 }

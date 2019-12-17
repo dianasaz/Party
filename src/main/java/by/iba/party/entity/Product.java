@@ -23,4 +23,7 @@ public class Product {
 
     @Column (name = "name")
     private String name;
+
+    @Column (name = "measure")
+    private String measure;
 }

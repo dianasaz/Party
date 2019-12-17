@@ -27,11 +27,11 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> findAllByProduct(Product product) {
         return taskRepository.findAllByProduct(product);
     }
-
-    @Override
-    public List<Task> findAllByUserInfo(UserInfo userInfo) {
-        return taskRepository.findAllByUserInfo(userInfo);
-    }
+//
+//    @Override
+//    public List<Task> findAllByUser(User userInfo) {
+//        return taskRepository.findAllByUser(userInfo);
+//    }
 
     @Override
     public List<Task> findAllByStatus(TaskStatus status) {

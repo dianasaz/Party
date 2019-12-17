@@ -3,10 +3,10 @@ package by.iba.party.service.impl;
 import by.iba.party.entity.Party;
 import by.iba.party.entity.PartyStatus;
 import by.iba.party.entity.Product;
+import by.iba.party.entity.User;
 import by.iba.party.repository.PartyRepository;
 import by.iba.party.service.PartyService;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +56,17 @@ public class PartyServiceImpl implements PartyService {
         // partyRepository.addProductForParty(party, product);
         party.getProducts().remove(product);
         partyRepository.save(party);
+    }
+
+    @Override
+    public void addUserToParty(Party party, User user) {
+        party.getUsers().add(user);
+        partyRepository.save(party);
+    }
+
+    @Override
+    public boolean checkUserToParty(Party party, User user) {
+        return party.getUsers().contains(user);
     }
 
     @Override

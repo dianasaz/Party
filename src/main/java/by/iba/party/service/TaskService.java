@@ -9,7 +9,7 @@ public interface TaskService extends Service<Task> {
 
     List<Task> findAllByProduct(Product product);
 
-    List<Task> findAllByUserInfo(UserInfo userInfo);
+//    List<Task> findAllByUser(User userInfo);
 
     List<Task> findAllByStatus(TaskStatus status);
 }

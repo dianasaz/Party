@@ -1,23 +1,26 @@
 package by.iba.party.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
-@Table (name = "product_type")
+@NoArgsConstructor
+@Table(name = "product_type")
 public class ProductType {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column (name = "value")
+    @Column(name = "value")
     private String value;
 
-//    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
+
+    //    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
 //    private List<Product> products;
 
     @Override

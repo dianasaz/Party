@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Level;
 
 @RestController
 @Log4j2
@@ -30,18 +29,17 @@ public class UserController {
         return userService.findById(id).orElse(new User());
     }
 
-    @PostMapping(value = "/login")
-    public User getByLoginAndPassword(@RequestBody User user) {
+    @GetMapping(value = "/login/{login}/password/{password}")
+    public User getByLoginAndPassword(@PathVariable(value = "login") String login, @PathVariable(value = "password") String password) {
+       User user = new User();
+       user.setLogin(login);
+       user.setPassword(password);
         User u = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
-       // if (u.getLogin() != null ) System.out.println("yhy");
         return u;
     }
 
 
-    //post создание сущностей
-    //put обновлять вроде
-    //REQUEST BODY для добавления новых (метод принимает @RequestBody Mentor mentor)
-    @PutMapping(value = "/{id}")
+     @PutMapping(value = "/{id}")
     public void update(@PathVariable Integer id, User user) {
         user.setId(id);
         userService.save(user);

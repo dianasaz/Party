@@ -19,20 +19,17 @@ public class Party {
     @Column (name = "name")
     private String name;
 
-    //todo
     @ManyToMany
     @JoinTable(name = "party_users",
             joinColumns = {@JoinColumn(name = "party_id")}, inverseJoinColumns = {@JoinColumn(name = "users_id")})
-    private List<UserInfo> users;
+    private List<User> users;
 
     @Column(name = "status")
     @Enumerated(EnumType.ORDINAL)
     private PartyStatus status;
 
-    @ManyToMany
-    @JoinTable(name = "party_products",
-     joinColumns = {@JoinColumn(name = "party_id")}, inverseJoinColumns = {@JoinColumn(name = "products_id")})
-    private List<Product> products;
+    @OneToMany
+   private List<Product> products;
 
     @Column (name = "address")
     private String address;

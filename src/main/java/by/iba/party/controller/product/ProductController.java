@@ -43,8 +43,9 @@ public class ProductController {
 
     @PostMapping(value = "/add")
     @ResponseStatus(HttpStatus.OK)
-    public void addNew(@RequestBody Product product) {
+    public Product addNew(@RequestBody Product product) {
         productService.save(product);
+        return product;
     }
 
 }

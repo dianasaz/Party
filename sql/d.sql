@@ -37,7 +37,8 @@ create table product
         primary key,
     name            varchar(255) not null,
     price           double       not null,
-    product_type_id int          not null
+    product_type_id int          not null,
+    measure varchar(255) not null
 )
     ENGINE = INNODB;
 
@@ -53,11 +54,11 @@ create table task
 (
     id            int auto_increment
         primary key,
-    money         double not null,
+    money         double,
     task_status   int    not null,
     party_id int    not null,
     product_id    int    not null,
-    user_info_id  int    not null
+    user_id  int    not null
 )
     ENGINE = INNODB;
 
@@ -66,17 +67,12 @@ create table user
     id       int auto_increment
         primary key,
     login    varchar(255) not null,
-    password varchar(255) not null
+    password varchar(255) not null,
+    name varchar(255),
+    email varchar(255)
 )
     ENGINE = INNODB;
 
-create table user_info
-(
-    id   int auto_increment
-        primary key,
-    name varchar(255) not null
-)
-    ENGINE = INNODB;
 
 ALTER TABLE party_products
   ADD FOREIGN KEY (party_id) REFERENCES party (id)
@@ -94,7 +90,7 @@ ALTER TABLE party_users
     ON DELETE NO ACTION;
 
 ALTER TABLE party_users
-  ADD FOREIGN KEY (users_id) REFERENCES user_info (id)
+  ADD FOREIGN KEY (users_id) REFERENCES user (id)
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
@@ -114,11 +110,17 @@ ALTER TABLE task
     ON DELETE CASCADE;
 
 ALTER TABLE task
-  ADD FOREIGN KEY (user_info_id) REFERENCES user_info (id)
+  ADD FOREIGN KEY (user_id) REFERENCES user (id)
     ON UPDATE CASCADE
     ON DELETE CASCADE;
 
-ALTER TABLE user_info
-  ADD FOREIGN KEY (id) REFERENCES user (id)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE;
+INSERT INTO product_type (id, value) VALUES (1, 'MEAT');
+INSERT INTO product_type (id, value) VALUES (2, 'ALCOHOL');
+INSERT INTO product_type (id, value) VALUES (3, 'FRUITS');
+INSERT INTO product_type (id, value) VALUES (4, 'VEGETABLES');
+INSERT INTO product_type (id, value) VALUES (5, 'ALCOHOL');
+INSERT INTO product_type (id, value) VALUES (6, 'NO-ALC DRINKS');
+INSERT INTO product_type (id, value) VALUES (7, 'OTHER');
+
+
+

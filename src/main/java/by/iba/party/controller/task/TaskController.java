@@ -42,9 +42,9 @@ public class TaskController {
     }
 
     @PostMapping(value = "/add")
-    @ResponseStatus(HttpStatus.OK)
-    public void addNew(@RequestBody Task task) {
+    public Task addNew(@RequestBody Task task) {
         taskService.save(task);
+        return task;
     }
 
 }
