@@ -19,6 +19,7 @@ create table party
 
 create table party_products
 (
+    id int auto_increment primary key ,
     party_id    int not null,
     products_id int not null
 )
@@ -26,6 +27,7 @@ create table party_products
 
 create table party_users
 (
+    id int auto_increment primary key ,
     party_id int not null,
     users_id int not null
 )
@@ -58,7 +60,8 @@ create table task
     task_status   int    not null,
     party_id int    not null,
     product_id    int    not null,
-    user_id  int    not null
+    user_id  int    not null,
+    kol int not null
 )
     ENGINE = INNODB;
 
@@ -101,8 +104,8 @@ ALTER TABLE product
 
 ALTER TABLE task
   ADD FOREIGN KEY (party_id) REFERENCES party (id)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE;
+    ON UPDATE no action
+    ON DELETE no action ;
 
 ALTER TABLE task
   ADD FOREIGN KEY (product_id) REFERENCES product (id)
@@ -111,8 +114,8 @@ ALTER TABLE task
 
 ALTER TABLE task
   ADD FOREIGN KEY (user_id) REFERENCES user (id)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE;
+    ON UPDATE no action
+    ON DELETE no action ;
 
 INSERT INTO product_type (id, value) VALUES (1, 'MEAT');
 INSERT INTO product_type (id, value) VALUES (2, 'ALCOHOL');

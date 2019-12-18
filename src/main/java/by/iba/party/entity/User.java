@@ -1,6 +1,9 @@
 package by.iba.party.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.DigestUtils;
@@ -9,6 +12,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 @Entity
 @ToString
 @Table (name = "user")
@@ -26,10 +30,15 @@ public class User {
     @Column (name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Task> tasks;
+    @Column (name = "email")
+    private String email;
+
+    @JsonCreator
+    User (Integer id){
+        this.id = id;
+    }
 
     public void setPassword(String password){
-        this.password = DigestUtils.md5DigestAsHex(password.getBytes()); //todo fix password
+        this.password = DigestUtils.md5DigestAsHex(password.getBytes());
     }
 }
