@@ -46,6 +46,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> findAllByUserAndParty(User user, Party party) {
+        return taskRepository.findAllByUserAndParty(user, party);
+    }
+
+    @Override
     public Task save(Task entity) {
         return taskRepository.save(entity);
     }

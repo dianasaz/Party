@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/parties")
@@ -50,11 +52,6 @@ public class PartyController {
     @GetMapping(value = "/{id}/products")
     public List<Product> allProductsForParty(@PathVariable(value = "id") Integer id) {
         List<Integer> prod_ids = partyService.findProductsForParty(id);
-//        List<Product> products = new ArrayList<>();
-//        for (Integer i : prod_ids) {
-//            productService.findById(i).ifPresent(product -> products.add(product));
-//        }
-//        return products;
         return prod_ids.stream()
                 .map(productService::findById)
                 .filter(Optional::isPresent)
@@ -104,6 +101,11 @@ public class PartyController {
     @GetMapping(value = "/{party_id}/users")
     public List<User> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Party party){
         return partyService.findById(party.getId()).get().getUsers();
-
     }
+
+//    @GetMapping(value = "/popular")
+//    public List<Party> getTheMostPopular(){
+//        List<Party> parties = partyService.findAll();
+//       // parties.stream().sorted(Comparator.comparingInt(Party::getUsers))
+//    }
 }

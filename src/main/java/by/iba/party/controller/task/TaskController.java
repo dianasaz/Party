@@ -1,9 +1,6 @@
 package by.iba.party.controller.task;
 
-import by.iba.party.entity.Party;
-import by.iba.party.entity.Product;
-import by.iba.party.entity.Task;
-import by.iba.party.entity.User;
+import by.iba.party.entity.*;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +56,16 @@ public class TaskController {
         return task;
     }
 
+    @GetMapping(value = "/party/{party}/user/{user}")
+    public List<Task> getTasksByPartyAndUser(@PathVariable Party party, @PathVariable User user){
+        return taskService.findAllByUserAndParty(user, party);
+    }
+
     @PostMapping(value = "/{task}/{money}")
-    public Task addPrice(@PathVariable String money, @PathVariable Task task) {
+    public Task CompleteTask(@PathVariable(value = "money") String money, @PathVariable(value = "task") Task task) {
         Double m = Double.parseDouble(money);
         task.setMoney(m);
+        task.setStatus(TaskStatus.READY);
         taskService.save(task);
         return task;
     }

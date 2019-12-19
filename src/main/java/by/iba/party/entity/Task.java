@@ -42,9 +42,10 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                ", user=" + user +
+                "id=" + id +
+                ", user=" + user.getId() +
                 ", product=" + product +
-                ", party=" + party +
+                ", party=" + party.getId() +
                 ", money=" + money +
                 ", status=" + status +
                 ", kol=" + kol +

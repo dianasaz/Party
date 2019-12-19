@@ -1,5 +1,6 @@
 package by.iba.party.service.impl;
 
+import by.iba.party.entity.Party;
 import by.iba.party.entity.User;
 import by.iba.party.repository.UserRepository;
 import by.iba.party.service.UserService;
@@ -32,6 +33,11 @@ public class UserServiceImpl implements UserService {
     public User save(User entity) {
         userRepository.save(entity);
         return entity;
+    }
+
+    @Override
+    public List<Integer> getUsersParties(User user){
+        return userRepository.getUsersParties(user.getId());
     }
 
     @Override

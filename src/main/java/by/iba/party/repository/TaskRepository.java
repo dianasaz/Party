@@ -17,4 +17,6 @@ public interface TaskRepository  extends JpaRepository<Task, Integer> {
     List<Task> findAllByStatus(TaskStatus status);
 
     Task findByPartyAndProduct(Party party, Product product);
+
+    List<Task> findAllByUserAndParty(User user, Party party);
 }
