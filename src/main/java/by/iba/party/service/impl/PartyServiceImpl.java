@@ -45,6 +45,11 @@ public class PartyServiceImpl implements PartyService {
     }
 
     @Override
+    public List<Party> findAllByDateAfter(Date date) {
+        return partyRepository.findAllByDateAfter(date);
+    }
+
+    @Override
     public void addProductForParty(Party party, Product product) {
        // partyRepository.addProductForParty(party, product);
         party.getProducts().add(product);

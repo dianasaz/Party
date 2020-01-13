@@ -16,4 +16,6 @@ public interface TaskService extends Service<Task> {
     Task checkExistTask(Party party, Product product);
 
     List<Task> findAllByUserAndParty(User user, Party party);
+
+
 }

@@ -14,6 +14,8 @@ public interface PartyService extends Service<Party> {
 
     List<Integer> findProductsForParty(Integer id);
 
+    List<Party> findAllByDateAfter(Date date);
+
     void addProductForParty(Party party, Product product);
 
     void deleteProductForParty(Party party, Product product);

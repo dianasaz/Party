@@ -2,34 +2,37 @@ package by.iba.party.controller.party;
 
 import by.iba.party.entity.Party;
 import by.iba.party.entity.Product;
+import by.iba.party.entity.Task;
 import by.iba.party.entity.User;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.ProductService;
+import by.iba.party.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/parties")
 public class PartyController {
     private final PartyService partyService;
     private final ProductService productService;
+    private final TaskService taskService;
 
     @Autowired
-    public PartyController(PartyService partyService, ProductService productService) {
+    public PartyController(PartyService partyService, ProductService productService, TaskService taskService) {
         this.partyService = partyService;
         this.productService = productService;
+        this.taskService = taskService;
     }
 
     @GetMapping(value = "/all")
     public List<Party> allParties() {
-        return partyService.findAll();
+        return partyService.findAllByDateAfter(new Date());
     }
 
     @GetMapping(value = "/by-address")
@@ -66,11 +69,26 @@ public class PartyController {
 
     @PostMapping(value = "/{party_id}/add/product/{product_id}")
     public void addProductForParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "product_id") Product product) {
+        Task task = taskService.checkExistTask(party, product);
+        if (task != null) {
+            task.setKol(task.getKol() + 1);
+            taskService.save(task);
+        }
         partyService.addProductForParty(party, product);
     }
 
     @DeleteMapping(value = "/{party_id}/delete/product/{product_id}")
     public void deleteProductForParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "product_id") Product product) {
+        Task task = taskService.checkExistTask(party, product);
+        if (task != null) {
+            if (task.getKol() != 1) {
+                task.setKol(task.getKol() - 1);
+                taskService.save(task);
+            }
+            if (task.getKol() == 1) {
+                productService.deleteById(product.getId());
+            }
+        }
         partyService.deleteProductForParty(party, product);
     }
 
@@ -88,24 +106,19 @@ public class PartyController {
     }
 
     @PostMapping(value = "/{party_id}/add/user/{user_id}")
-    public void addUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User userInfo){
+    public void addUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User userInfo) {
         partyService.addUserToParty(party, userInfo);
     }
 
     @GetMapping(value = "/{party_id}/check/user/{user_id}")
-    public User checkUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User user){
+    public User checkUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User user) {
         if (partyService.checkUserToParty(party, user)) return user;
         else return null;
     }
 
     @GetMapping(value = "/{party_id}/users")
-    public List<User> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Party party){
+    public List<User> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Party party) {
         return partyService.findById(party.getId()).get().getUsers();
     }
 
-//    @GetMapping(value = "/popular")
-//    public List<Party> getTheMostPopular(){
-//        List<Party> parties = partyService.findAll();
-//       // parties.stream().sorted(Comparator.comparingInt(Party::getUsers))
-//    }
 }

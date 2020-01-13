@@ -26,6 +26,5 @@ public interface PartyRepository extends JpaRepository<Party, Integer> {
     @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM party_products WHERE party_id = :party_id AND products_id = :product_id")
     Integer findCountProductsInParty(@Param("party_id") Integer partyId, @Param("product_id") Integer productId);
 
-//    @Query (nativeQuery = true, value = "insert into party_products (party_id, products_id) values (:party, :product)")
-//    void addProductForParty(@Param("party") Integer party,@Param("product") Integer product);
+    List<Party> findAllByDateAfter(Date date);
 }
