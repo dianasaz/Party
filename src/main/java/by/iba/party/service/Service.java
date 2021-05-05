@@ -8,8 +8,6 @@ public interface Service<T> {
 
     Optional<T> findById(Integer id);
 
-    boolean existsById(Integer id);
-
     List<T> findAll();
 
     void deleteById(Integer id);

@@ -6,10 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface PartyService extends Service<Party> {
-    List<Party> findAllByDate(Date date);
-
-    List<Party> findAllByStatus(PartyStatus status);
-
     List<Party> findAllByAddressContains(String address);
 
     List<Integer> findProductsForParty(Integer id);

@@ -1,8 +1,6 @@
 package by.iba.party.service.impl;
 
-import by.iba.party.entity.Party;
 import by.iba.party.entity.Product;
-import by.iba.party.entity.ProductType;
 import by.iba.party.repository.ProductRepository;
 import by.iba.party.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,26 +19,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllByNameContains(String name) {
-        return productRepository.findAllByNameContains(name);
-    }
-
-    @Override
-    public List<Product> findByPrice(Double price) {
-        return productRepository.findByPrice(price);
-    }
-
-    @Override
-    public List<Product> findAllByType(ProductType type) {
-        return productRepository.findAllByType(type);
-    }
-
-//    @Override
-//    public List<Product> findAllByParty(Party party) {
-//        return productRepository.findAllByParty(party);
-//    }
-
-    @Override
     public Product save(Product entity) {
         return productRepository.save(entity);
     }
@@ -48,11 +26,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Product> findById(Integer id) {
         return productRepository.findById(id);
-    }
-
-    @Override
-    public boolean existsById(Integer id) {
-        return productRepository.existsById(id);
     }
 
     @Override

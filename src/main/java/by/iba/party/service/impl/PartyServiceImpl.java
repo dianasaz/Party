@@ -1,7 +1,6 @@
 package by.iba.party.service.impl;
 
 import by.iba.party.entity.Party;
-import by.iba.party.entity.PartyStatus;
 import by.iba.party.entity.Product;
 import by.iba.party.entity.User;
 import by.iba.party.repository.PartyRepository;
@@ -25,16 +24,6 @@ public class PartyServiceImpl implements PartyService {
     }
 
     @Override
-    public List<Party> findAllByDate(Date date) {
-        return partyRepository.findAllByDate(date);
-    }
-
-    @Override
-    public List<Party> findAllByStatus(PartyStatus status) {
-        return partyRepository.findAllByStatus(status);
-    }
-
-    @Override
     public List<Party> findAllByAddressContains(String address) {
         return partyRepository.findAllByAddressContains(address);
     }
@@ -51,14 +40,12 @@ public class PartyServiceImpl implements PartyService {
 
     @Override
     public void addProductForParty(Party party, Product product) {
-       // partyRepository.addProductForParty(party, product);
         party.getProducts().add(product);
         partyRepository.save(party);
     }
 
     @Override
     public void deleteProductForParty(Party party, Product product) {
-        // partyRepository.addProductForParty(party, product);
         party.getProducts().remove(product);
         partyRepository.save(party);
     }
@@ -90,18 +77,12 @@ public class PartyServiceImpl implements PartyService {
     }
 
     @Override
-    public boolean existsById(Integer id) {
-        return partyRepository.existsById(id);
-    }
-
-    @Override
     public List<Party> findAll() {
         return partyRepository.findAll();
     }
 
     @Override
     public void deleteById(Integer id) {
-      //  log.log(Level.INFO, "party with id = " + id + " was deleted");
         partyRepository.deleteById(id);
     }
 }

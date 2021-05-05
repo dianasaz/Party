@@ -1,6 +1,5 @@
 package by.iba.party.repository;
 
-import by.iba.party.entity.Party;
 import by.iba.party.entity.Product;
 import by.iba.party.entity.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;

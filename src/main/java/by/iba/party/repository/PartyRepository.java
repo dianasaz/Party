@@ -2,9 +2,7 @@ package by.iba.party.repository;
 
 import by.iba.party.entity.Party;
 import by.iba.party.entity.PartyStatus;
-import by.iba.party.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

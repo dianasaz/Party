@@ -19,25 +19,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findAllByParty(Party party) {
-        return taskRepository.findAllByParty(party);
-    }
-
-    @Override
-    public List<Task> findAllByProduct(Product product) {
-        return taskRepository.findAllByProduct(product);
-    }
-
-
-    @Override
     public List<Task> findAllByUser(User userInfo) {
         return taskRepository.findAllByUser(userInfo);
-    }
-
-
-    @Override
-    public List<Task> findAllByStatus(TaskStatus status) {
-        return taskRepository.findAllByStatus(status);
     }
 
     @Override
@@ -58,11 +41,6 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Optional<Task> findById(Integer id) {
         return taskRepository.findById(id);
-    }
-
-    @Override
-    public boolean existsById(Integer id) {
-        return taskRepository.existsById(id);
     }
 
     @Override

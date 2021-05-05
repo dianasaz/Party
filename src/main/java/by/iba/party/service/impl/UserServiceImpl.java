@@ -1,6 +1,5 @@
 package by.iba.party.service.impl;
 
-import by.iba.party.entity.Party;
 import by.iba.party.entity.User;
 import by.iba.party.repository.UserRepository;
 import by.iba.party.service.UserService;
@@ -43,11 +42,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findById(Integer id) {
         return userRepository.findById(id);
-    }
-
-    @Override
-    public boolean existsById(Integer id) {
-        return userRepository.existsById(id);
     }
 
     @Override

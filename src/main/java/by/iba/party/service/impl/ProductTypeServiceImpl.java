@@ -29,11 +29,6 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     }
 
     @Override
-    public boolean existsById(Integer id) {
-        return productTypeRepository.existsById(id);
-    }
-
-    @Override
     public List<ProductType> findAll() {
         return productTypeRepository.findAll();
     }

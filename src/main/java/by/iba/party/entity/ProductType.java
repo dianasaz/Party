@@ -19,10 +19,6 @@ public class ProductType {
     @Column(name = "value")
     private String value;
 
-
-    //    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
-//    private List<Product> products;
-
     @Override
     public String toString() {
         return "ProductType{" +

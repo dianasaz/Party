@@ -39,8 +39,7 @@ public class UserController {
        User user = new User();
        user.setLogin(login);
        user.setPassword(password);
-        User u = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
-        return u;
+       return userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
     }
 
     @GetMapping(value = "/{id}/parties")
@@ -49,6 +48,7 @@ public class UserController {
         for (Integer i : userService.getUsersParties(user)) {
             parties.add(partyService.findById(i).get());
         }
+
         return parties;
     }
 
@@ -56,15 +56,13 @@ public class UserController {
     public User addInfo(@PathVariable String userName, @PathVariable String userEmail, @PathVariable(value = "id") User user) {
         user.setEmail(userEmail);
         user.setName(userName);
-        userService.save(user);
-        return user;
+        return userService.save(user);
     }
 
      @PutMapping(value = "/{id}")
     public void update(@PathVariable Integer id, User user) {
         user.setId(id);
         userService.save(user);
-        //     log..log(Level.INFO, "User was saved");
     }
 
     @DeleteMapping(value = "/{id}")
@@ -77,7 +75,7 @@ public class UserController {
         if (!userService.existsByLogin(user.getLogin())) {
             userService.save(user);
         }
-
     }
+
 }
 

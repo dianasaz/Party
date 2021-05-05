@@ -18,7 +18,6 @@ public class ProductTypeController {
         this.productTypeService = productTypeService;
     }
 
-    //JsonIgnore JsonView
     @GetMapping(value = "/all")
     public List<ProductType> allProductTypes() {
         return productTypeService.findAll();
