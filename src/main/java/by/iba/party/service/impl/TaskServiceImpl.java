@@ -1,8 +1,13 @@
 package by.iba.party.service.impl;
 
+import by.iba.party.dto.PartyDto;
+import by.iba.party.dto.ProductDto;
+import by.iba.party.dto.TaskDto;
+import by.iba.party.dto.UserDto;
 import by.iba.party.entity.*;
 import by.iba.party.repository.TaskRepository;
 import by.iba.party.service.TaskService;
+import by.iba.party.util.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,33 +24,39 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findAllByUser(User userInfo) {
-        return taskRepository.findAllByUser(userInfo);
+    public List<TaskDto> findAllByUser(UserDto userInfoDto) {
+        User user = ModelMapperUtil.map(userInfoDto, User.class);
+        return ModelMapperUtil.mapList(taskRepository.findAllByUser(user), TaskDto.class);
     }
 
     @Override
-    public Task checkExistTask(Party party, Product product) {
-        return taskRepository.findByPartyAndProduct(party, product);
+    public TaskDto checkExistTask(PartyDto partyDto, ProductDto productDto) {
+        Party party = ModelMapperUtil.map(partyDto, Party.class);
+        Product product = ModelMapperUtil.map(productDto, Product.class);
+        return ModelMapperUtil.map(taskRepository.findByPartyAndProduct(party, product), TaskDto.class);
     }
 
     @Override
-    public List<Task> findAllByUserAndParty(User user, Party party) {
-        return taskRepository.findAllByUserAndParty(user, party);
+    public List<TaskDto> findAllByUserAndParty(UserDto userDto, PartyDto partyDto) {
+        User user = ModelMapperUtil.map(userDto, User.class);
+        Party party = ModelMapperUtil.map(partyDto, Party.class);
+        return ModelMapperUtil.mapList(taskRepository.findAllByUserAndParty(user, party), TaskDto.class);
     }
 
     @Override
-    public Task save(Task entity) {
-        return taskRepository.save(entity);
+    public TaskDto save(TaskDto taskDto) {
+        Task task = ModelMapperUtil.map(taskDto, Task.class);
+        return ModelMapperUtil.map(taskRepository.save(task), TaskDto.class);
     }
 
     @Override
-    public Optional<Task> findById(Integer id) {
-        return taskRepository.findById(id);
+    public Optional<TaskDto> findById(Integer id) {
+        return Optional.of(ModelMapperUtil.map(taskRepository.findById(id), TaskDto.class));
     }
 
     @Override
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public List<TaskDto> findAll() {
+        return ModelMapperUtil.mapList(taskRepository.findAll(), TaskDto.class);
     }
 
     @Override

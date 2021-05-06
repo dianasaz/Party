@@ -1,8 +1,10 @@
 package by.iba.party.service.impl;
 
+import by.iba.party.dto.ProductDto;
 import by.iba.party.entity.Product;
 import by.iba.party.repository.ProductRepository;
 import by.iba.party.service.ProductService;
+import by.iba.party.util.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,18 +21,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(Product entity) {
-        return productRepository.save(entity);
+    public ProductDto save(ProductDto productDto) {
+        Product product = ModelMapperUtil.map(productDto, Product.class);
+        return ModelMapperUtil.map(productRepository.save(product), ProductDto.class);
     }
 
     @Override
-    public Optional<Product> findById(Integer id) {
-        return productRepository.findById(id);
+    public Optional<ProductDto> findById(Integer id) {
+        return Optional.of(ModelMapperUtil.map(productRepository.findById(id), ProductDto.class));
     }
 
     @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<ProductDto> findAll() {
+        return ModelMapperUtil.mapList(productRepository.findAll(), ProductDto.class);
     }
 
     @Override

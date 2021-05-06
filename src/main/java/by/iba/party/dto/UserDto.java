@@ -1,34 +1,25 @@
-package by.iba.party.entity;
+package by.iba.party.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.springframework.util.DigestUtils;
-
-import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
-@Entity
-@ToString
-@Table (name = "user")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@AllArgsConstructor
+public class UserDto {
     private Integer id;
-
-    @Column(name = "login")
     private String login;
-
-    @Column(name = "password")
     private String password;
-
-    @Column (name = "name")
     private String name;
-
-    @Column (name = "email")
     private String email;
+
+    @JsonCreator
+    UserDto (Integer id){
+        this.id = id;
+    }
 
     public void setPassword(String password){
         this.password = DigestUtils.md5DigestAsHex(password.getBytes());

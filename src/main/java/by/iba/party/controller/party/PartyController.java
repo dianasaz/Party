@@ -1,15 +1,23 @@
 package by.iba.party.controller.party;
 
-import by.iba.party.entity.Party;
-import by.iba.party.entity.Product;
-import by.iba.party.entity.Task;
-import by.iba.party.entity.User;
+import by.iba.party.dto.PartyDto;
+import by.iba.party.dto.ProductDto;
+import by.iba.party.dto.TaskDto;
+import by.iba.party.dto.UserDto;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.ProductService;
 import by.iba.party.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
@@ -31,31 +39,31 @@ public class PartyController {
     }
 
     @GetMapping(value = "/all")
-    public List<Party> allParties() {
+    public List<PartyDto> allParties() {
         return partyService.findAllByDateAfter(new Date());
     }
 
     @GetMapping(value = "/by-address")
-    public List<Party> allPartiesByAddress(@RequestBody String address) {
+    public List<PartyDto> allPartiesByAddress(@RequestBody String address) {
         return partyService.findAllByAddressContains(address);
     }
 
     @GetMapping(value = "/{id}")
-    public Party getById(@PathVariable Integer id) {
-        return partyService.findById(id).orElse(new Party());
+    public PartyDto  getById(@PathVariable Integer id) {
+        return partyService.findById(id).orElse(new PartyDto());
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void update(@PathVariable Integer id, @RequestBody Party party) {
-        party.setId(id);
-        partyService.save(party);
+    public void update(@PathVariable Integer id, @RequestBody PartyDto partyDto) {
+        partyDto.setId(id);
+        partyService.save(partyDto);
     }
 
     @GetMapping(value = "/{id}/products")
-    public List<Product> allProductsForParty(@PathVariable(value = "id") Integer id) {
-        List<Integer> prod_ids = partyService.findProductsForParty(id);
-        return prod_ids.stream()
+    public List<ProductDto> allProductsForParty(@PathVariable(value = "id") Integer id) {
+        List<Integer> productIds = partyService.findProductsForParty(id);
+        return productIds.stream()
                 .map(productService::findById)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -63,33 +71,33 @@ public class PartyController {
     }
 
     @GetMapping(value = "/{party_id}/products/{product_id}")
-    public Integer findCountOfProductOnParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "product_id") Product product) {
-        return partyService.findCountProductsInParty(party, product);
+    public Integer findCountOfProductOnParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
+        return partyService.findCountProductsInParty(partyDto, productDto);
     }
 
     @PostMapping(value = "/{party_id}/add/product/{product_id}")
-    public void addProductForParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "product_id") Product product) {
-        Task task = taskService.checkExistTask(party, product);
-        if (task != null) {
-            task.setKol(task.getKol() + 1);
-            taskService.save(task);
+    public void addProductForParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
+        TaskDto taskDto = taskService.checkExistTask(partyDto, productDto);
+        if (taskDto != null) {
+            taskDto.setKol(taskDto.getKol() + 1);
+            taskService.save(taskDto);
         }
-        partyService.addProductForParty(party, product);
+        partyService.addProductForParty(partyDto, productDto);
     }
 
     @DeleteMapping(value = "/{party_id}/delete/product/{product_id}")
-    public void deleteProductForParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "product_id") Product product) {
-        Task task = taskService.checkExistTask(party, product);
-        if (task != null) {
-            if (task.getKol() != 1) {
-                task.setKol(task.getKol() - 1);
-                taskService.save(task);
+    public void deleteProductForParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
+        TaskDto taskDto = taskService.checkExistTask(partyDto, productDto);
+        if (taskDto != null) {
+            if (taskDto.getKol() != 1) {
+                taskDto.setKol(taskDto.getKol() - 1);
+                taskService.save(taskDto);
             }
-            if (task.getKol() == 1) {
-                productService.deleteById(product.getId());
+            if (taskDto.getKol() == 1) {
+                productService.deleteById(productDto.getId());
             }
         }
-        partyService.deleteProductForParty(party, product);
+        partyService.deleteProductForParty(partyDto, productDto);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -100,25 +108,24 @@ public class PartyController {
 
     @PostMapping(value = "/add")
     @ResponseStatus(HttpStatus.OK)
-    public Party addNew(@RequestBody Party party) {
-        partyService.save(party);
-        return party;
+    public PartyDto addNew(@RequestBody PartyDto partyDto) {
+        return partyService.save(partyDto);
     }
 
     @PostMapping(value = "/{party_id}/add/user/{user_id}")
-    public void addUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User userInfo) {
-        partyService.addUserToParty(party, userInfo);
+    public void addUserToParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "user_id") UserDto userInfoDto) {
+        partyService.addUserToParty(partyDto, userInfoDto);
     }
 
     @GetMapping(value = "/{party_id}/check/user/{user_id}")
-    public User checkUserToParty(@PathVariable(value = "party_id") Party party, @PathVariable(value = "user_id") User user) {
-        if (partyService.checkUserToParty(party, user)) return user;
-        else return null;
+    public UserDto checkUserToParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "user_id") UserDto userDto) {
+        return partyService.checkUserToParty(partyDto, userDto) ? userDto : null;
     }
 
     @GetMapping(value = "/{party_id}/users")
-    public List<User> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Party party) {
-        return partyService.findById(party.getId()).get().getUsers();
+    public List<UserDto> getAllUsersOnTHisParty(@PathVariable(value = "party_id") PartyDto partyDto) {
+        return partyService.findById(partyDto.getId()).get().getUserDtos();
     }
+
 
 }

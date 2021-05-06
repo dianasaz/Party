@@ -1,13 +1,13 @@
 package by.iba.party.service;
 
-import by.iba.party.entity.User;
+import by.iba.party.dto.UserDto;
 
 import java.util.List;
 
-public interface UserService extends Service<User> {
+public interface UserService extends Service<UserDto> {
     boolean existsByLogin(String login);
 
-    User findByLoginAndPassword(String login, String password);
+    UserDto findByLoginAndPassword(String login, String password);
 
-    List<Integer> getUsersParties(User user);
+    List<Integer> getUsersParties(UserDto userDto);
 }

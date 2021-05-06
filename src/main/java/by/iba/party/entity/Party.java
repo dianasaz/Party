@@ -20,7 +20,6 @@ public class Party {
     @Column (name = "name")
     private String name;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "party_users",
             joinColumns = {@JoinColumn(name = "party_id")}, inverseJoinColumns = {@JoinColumn(name = "users_id")})

@@ -11,6 +11,7 @@ dependencies {
     implementation("org.apache.commons:commons-dbcp2:2.1.1")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf:2.1.8.RELEASE")
     implementation("org.springframework.boot:spring-boot-starter-web:2.1.8.RELEASE")
+    implementation("org.modelmapper:modelmapper:0.7.5")
     runtimeOnly("mysql:mysql-connector-java:8.0.17")
     compileOnly("org.projectlombok:lombok:1.18.16")
     annotationProcessor ("org.projectlombok:lombok:1.18.16")
