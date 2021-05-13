@@ -1,6 +1,11 @@
 package by.iba.party.config;
 
-import org.modelmapper.*;
+import by.iba.party.mapper.PartyMapper;
+import by.iba.party.mapper.ProductMapper;
+import by.iba.party.mapper.ProductTypeMapper;
+import by.iba.party.mapper.TaskMapper;
+import by.iba.party.mapper.UserMapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,14 +24,28 @@ public class WebConfig {
         };
     }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
-
-        return modelMapper;
-    }
-
+//    @Bean
+//    public PartyMapper partyMapper() {
+//        return Mappers.getMapper( PartyMapper.class );
+//    }
+//
+//    @Bean
+//    public ProductMapper productMapper() {
+//        return Mappers.getMapper( ProductMapper.class );
+//    }
+//
+//    @Bean
+//    public TaskMapper taskMapper() {
+//        return Mappers.getMapper( TaskMapper.class );
+//    }
+//
+//    @Bean
+//    public ProductTypeMapper productTypeMapper() {
+//        return Mappers.getMapper( ProductTypeMapper.class );
+//    }
+//
+//    @Bean
+//    public UserMapper userMapper() {
+//        return Mappers.getMapper( UserMapper.class );
+//    }
 }

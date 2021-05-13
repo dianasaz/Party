@@ -1,6 +1,7 @@
 package by.iba.party.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.util.DigestUtils;
 public class UserDto {
     private Integer id;
     private String login;
+    @JsonIgnore
     private String password;
     private String name;
     private String email;

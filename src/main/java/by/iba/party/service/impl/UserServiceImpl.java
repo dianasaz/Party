@@ -2,9 +2,9 @@ package by.iba.party.service.impl;
 
 import by.iba.party.dto.UserDto;
 import by.iba.party.entity.User;
+import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.UserRepository;
 import by.iba.party.service.UserService;
-import by.iba.party.util.ModelMapperUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -27,13 +28,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findByLoginAndPassword(String login, String password) {
-        return ModelMapperUtil.map(userRepository.findByLoginAndPassword(login, password), UserDto.class);
+        return userMapper.toDto(userRepository.findByLoginAndPassword(login, password));
     }
 
     @Override
     public UserDto save(UserDto userDto) {
-        User user = ModelMapperUtil.map(userDto, User.class);
-        return ModelMapperUtil.map(userRepository.save(user), UserDto.class);
+        User user = userMapper.fromDto(userDto);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
@@ -43,12 +44,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserDto> findById(Integer id) {
-        return Optional.of(ModelMapperUtil.map(userRepository.findById(id), UserDto.class));
+        return Optional.of(userMapper.toDto(userRepository.findById(id).get()));
     }
 
     @Override
     public List<UserDto> findAll() {
-        return ModelMapperUtil.mapList(userRepository.findAll(), UserDto.class);
+        return userMapper.toListDto(userRepository.findAll());
     }
 
     @Override

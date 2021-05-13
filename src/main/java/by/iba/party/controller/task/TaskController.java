@@ -50,9 +50,9 @@ public class TaskController {
         taskService.save(newTaskDto);
     }
 
-    @GetMapping(value = "/by-user/{user_id}")
-    public List<TaskDto> findByUser(@PathVariable UserDto user_id){
-        return taskService.findAllByUser(user_id);
+    @GetMapping(value = "/by-user/{userId}")
+    public List<TaskDto> findByUser(@PathVariable Integer userId){
+        return taskService.findAllByUser(userId);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -63,13 +63,13 @@ public class TaskController {
 
     @PostMapping(value = "/add")
     public TaskDto addNew(@RequestBody TaskDto taskDto) {
-        taskDto.setPartyDto(partyService.findById(taskDto.getPartyDto().getId()).get());
+        taskDto.setParty(partyService.findById(taskDto.getParty().getId()).get());
         return taskService.save(taskDto);
     }
 
-    @GetMapping(value = "/party/{party}/user/{user}")
-    public List<TaskDto> getTasksByPartyAndUser(@PathVariable PartyDto party, @PathVariable UserDto user){
-        return taskService.findAllByUserAndParty(user, party);
+    @GetMapping(value = "/party/{partyId}/user/{userId}")
+    public List<TaskDto> getTasksByPartyAndUser(@PathVariable Integer partyId, @PathVariable Integer userId){
+        return taskService.findAllByUserAndParty(userId, partyId);
     }
 
     @PostMapping(value = "/{task}/{money}")
@@ -82,9 +82,9 @@ public class TaskController {
     }
 
     @GetMapping(value = "/check/{party}/{product}")
-    public TaskDto checkTask(@PathVariable PartyDto party,
-                          @PathVariable ProductDto product) {
-        return taskService.checkExistTask(party, product);
+    public TaskDto checkTask(@PathVariable Integer partyId,
+                          @PathVariable Integer productId) {
+        return taskService.checkExistTask(partyId, productId);
     }
 
 }

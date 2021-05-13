@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TaskDto {
     private Integer id;
-    private UserDto userDto;
-    private ProductDto productDto;
-    private PartyDto partyDto;
+    private UserDto user;
+    private ProductDto product;
+    private PartyDto party;
     private Double money;
     private TaskStatus status;
     private Integer kol;

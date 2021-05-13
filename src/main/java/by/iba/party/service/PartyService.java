@@ -20,8 +20,6 @@ public interface PartyService extends Service<PartyDto> {
 
     void addUserToParty(PartyDto partyDto, UserDto userDto);
 
-    boolean checkUserToParty(PartyDto partyDto, UserDto userDto);
-
-    Integer findCountProductsInParty(PartyDto partyDto, ProductDto productDto);
+    Integer findCountProductsInParty(Integer partyId, Integer productId);
 
 }

@@ -71,8 +71,8 @@ public class PartyController {
     }
 
     @GetMapping(value = "/{party_id}/products/{product_id}")
-    public Integer findCountOfProductOnParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
-        return partyService.findCountProductsInParty(partyDto, productDto);
+    public Integer findCountOfProductOnParty(@PathVariable(value = "party_id") Integer partyId, @PathVariable(value = "product_id") Integer productId) {
+        return partyService.findCountProductsInParty(partyId, productId);
     }
 
     @PostMapping(value = "/{party_id}/add/product/{product_id}")
@@ -117,15 +117,8 @@ public class PartyController {
         partyService.addUserToParty(partyDto, userInfoDto);
     }
 
-    @GetMapping(value = "/{party_id}/check/user/{user_id}")
-    public UserDto checkUserToParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "user_id") UserDto userDto) {
-        return partyService.checkUserToParty(partyDto, userDto) ? userDto : null;
-    }
-
     @GetMapping(value = "/{party_id}/users")
-    public List<UserDto> getAllUsersOnTHisParty(@PathVariable(value = "party_id") PartyDto partyDto) {
-        return partyService.findById(partyDto.getId()).get().getUserDtos();
+    public List<UserDto> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Integer id) {
+        return partyService.findById(id).get().getUsers();
     }
-
-
 }

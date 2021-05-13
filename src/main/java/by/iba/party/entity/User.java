@@ -30,7 +30,8 @@ public class User {
     @Column (name = "email")
     private String email;
 
-    public void setPassword(String password){
-        this.password = DigestUtils.md5DigestAsHex(password.getBytes());
-    }
+//
+//    public void setPassword(String password){
+//        this.password = DigestUtils.md5DigestAsHex(password.getBytes());
+//    }
 }

@@ -16,12 +16,12 @@ public class PartyDto {
     private Integer id;
     private String name;
     @JsonIgnore
-    private List<UserDto> userDtos;
+    private List<UserDto> users;
     private PartyStatus status;
     @JsonIgnore
-    private List<ProductDto> productDtos;
-    @JsonIgnore
-    private List<TaskDto> taskDtos;
+    private List<ProductDto> products;
+//    @JsonIgnore
+//    private List<TaskDto> tasks;
     private String address;
-    private Date data;
+    private Date date;
 }

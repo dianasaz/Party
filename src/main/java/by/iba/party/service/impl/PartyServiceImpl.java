@@ -6,9 +6,12 @@ import by.iba.party.dto.UserDto;
 import by.iba.party.entity.Party;
 import by.iba.party.entity.Product;
 import by.iba.party.entity.User;
+import by.iba.party.mapper.PartyMapper;
+import by.iba.party.mapper.ProductMapper;
+import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.PartyRepository;
 import by.iba.party.service.PartyService;
-import by.iba.party.util.ModelMapperUtil;
+import by.iba.party.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +24,20 @@ import java.util.Optional;
 @Log4j2
 public class PartyServiceImpl implements PartyService {
     private final PartyRepository partyRepository;
+    private final UserService userService;
+    private final PartyMapper partyMapper = PartyMapper.INSTANCE;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
+    private final ProductMapper productMapper = ProductMapper.INSTANCE;
 
     @Autowired
-    public PartyServiceImpl(PartyRepository partyRepository) {
+    public PartyServiceImpl(PartyRepository partyRepository, UserService userService) {
         this.partyRepository = partyRepository;
+        this.userService = userService;
     }
 
     @Override
     public List<PartyDto> findAllByAddressContains(String address) {
-        return ModelMapperUtil.mapList(partyRepository.findAllByAddressContains(address), PartyDto.class);
+        return partyMapper.toListDto(partyRepository.findAllByAddressContains(address));
     }
 
     @Override
@@ -39,57 +47,52 @@ public class PartyServiceImpl implements PartyService {
 
     @Override
     public List<PartyDto> findAllByDateAfter(Date date) {
-        return ModelMapperUtil.mapList(partyRepository.findAllByDateAfter(date), PartyDto.class);
+        return partyMapper.toListDto(partyRepository.findAllByDateAfter(date));
     }
 
     @Override
     public void addProductForParty(PartyDto partyDto, ProductDto productDto) {
-        Party party = ModelMapperUtil.map(partyDto, Party.class);
-        Product product = ModelMapperUtil.map(productDto, Product.class);
+        Party party = partyMapper.fromDto(partyDto);
+        Product product = productMapper.fromDto(productDto);
         party.getProducts().add(product);
         partyRepository.save(party);
     }
 
     @Override
     public void deleteProductForParty(PartyDto partyDto, ProductDto productDto) {
-        Party party = ModelMapperUtil.map(partyDto, Party.class);
-        Product product = ModelMapperUtil.map(productDto, Product.class);
+        Party party = partyMapper.fromDto(partyDto);
+        Product product = productMapper.fromDto(productDto);
         party.getProducts().remove(product);
         partyRepository.save(party);
     }
 
     @Override
     public void addUserToParty(PartyDto partyDto, UserDto userDto) {
-        Party party = ModelMapperUtil.map(partyDto, Party.class);
-        User user = ModelMapperUtil.map(userDto, User.class);
+        Party party = partyMapper.fromDto(partyDto);
+        User user = userMapper.fromDto(userDto);
         party.getUsers().add(user);
         partyRepository.save(party);
     }
 
     @Override
-    public boolean checkUserToParty(PartyDto partyDto, UserDto userDto) {
-        return partyDto.getUserDtos().contains(userDto);
+    public Integer findCountProductsInParty(Integer partyId, Integer productId) {
+        return partyRepository.findCountProductsInParty(partyId, productId);
     }
 
     @Override
-    public Integer findCountProductsInParty(PartyDto partyDto, ProductDto productDto) {
-        return partyRepository.findCountProductsInParty(partyDto.getId(), productDto.getId());
-    }
-
-    @Override
-    public PartyDto save(PartyDto entity) {
-        Party party = ModelMapperUtil.map(entity, Party.class);
-        return ModelMapperUtil.map(partyRepository.save(party), PartyDto.class);
+    public PartyDto save(PartyDto partyDto) {
+        Party party = partyMapper.fromDto(partyDto);
+        return partyMapper.toDto(partyRepository.save(party));
     }
 
     @Override
     public Optional<PartyDto> findById(Integer id) {
-        return Optional.of(ModelMapperUtil.map(partyRepository.findById(id), PartyDto.class));
+        return Optional.of(partyMapper.toDto(partyRepository.findById(id).get()));
     }
 
     @Override
     public List<PartyDto> findAll() {
-        return ModelMapperUtil.mapList(partyRepository.findAll(), PartyDto.class);
+        return partyMapper.toListDto(partyRepository.findAll());
     }
 
     @Override
