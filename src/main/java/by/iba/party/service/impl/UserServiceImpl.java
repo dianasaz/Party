@@ -2,6 +2,7 @@ package by.iba.party.service.impl;
 
 import by.iba.party.dto.UserDto;
 import by.iba.party.entity.User;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.UserRepository;
 import by.iba.party.service.UserService;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDto> findById(Integer id) {
-        return Optional.of(userMapper.toDto(userRepository.findById(id).get()));
+    public UserDto findById(Integer id) throws NoEntityException {
+        return userMapper.toDto(userRepository.findById(id).orElseThrow(() -> new NoEntityException("No user with such id: " + id)));
     }
 
     @Override

@@ -6,33 +6,30 @@ import by.iba.party.dto.UserDto;
 import by.iba.party.entity.Party;
 import by.iba.party.entity.Product;
 import by.iba.party.entity.User;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.mapper.PartyMapper;
 import by.iba.party.mapper.ProductMapper;
 import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.PartyRepository;
 import by.iba.party.service.PartyService;
-import by.iba.party.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Log4j2
 public class PartyServiceImpl implements PartyService {
     private final PartyRepository partyRepository;
-    private final UserService userService;
     private final PartyMapper partyMapper = PartyMapper.INSTANCE;
     private final UserMapper userMapper = UserMapper.INSTANCE;
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
 
     @Autowired
-    public PartyServiceImpl(PartyRepository partyRepository, UserService userService) {
+    public PartyServiceImpl(PartyRepository partyRepository) {
         this.partyRepository = partyRepository;
-        this.userService = userService;
     }
 
     @Override
@@ -86,8 +83,8 @@ public class PartyServiceImpl implements PartyService {
     }
 
     @Override
-    public Optional<PartyDto> findById(Integer id) {
-        return Optional.of(partyMapper.toDto(partyRepository.findById(id).get()));
+    public PartyDto findById(Integer id) throws NoEntityException {
+        return partyMapper.toDto(partyRepository.findById(id).orElseThrow(() -> new NoEntityException(" No party with such id: " + id)));
     }
 
     @Override

@@ -3,6 +3,7 @@ package by.iba.party.controller.user;
 import by.iba.party.dto.PartyDto;
 import by.iba.party.dto.UserDto;
 import by.iba.party.entity.User;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -39,8 +40,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public UserDto getById(@PathVariable Integer id) {
-        return userService.findById(id).orElse(new UserDto());
+    public UserDto getById(@PathVariable Integer id) throws NoEntityException {
+        return userService.findById(id);
     }
 
     @GetMapping(value = "/login/{login}/password/{password}")
@@ -52,10 +53,10 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}/parties")
-    public List<PartyDto> getUsersParties(@PathVariable(value = "id") UserDto user){
+    public List<PartyDto> getUsersParties(@PathVariable(value = "id") UserDto user) throws NoEntityException {
         List<PartyDto> parties= new ArrayList<>();
         for (Integer i : userService.getUsersParties(user)) {
-            parties.add(partyService.findById(i).get());
+            parties.add(partyService.findById(i));
         }
 
         return parties;

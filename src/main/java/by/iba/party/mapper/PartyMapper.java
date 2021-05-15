@@ -7,9 +7,7 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(uses = {ProductMapper.class, UserMapper.class,
-//        TaskMapper.class
-})
+@Mapper(uses = {ProductMapper.class, UserMapper.class})
 public interface PartyMapper {
 
     PartyMapper INSTANCE = Mappers.getMapper(PartyMapper.class);

@@ -4,14 +4,17 @@ import by.iba.party.dto.PartyDto;
 import by.iba.party.dto.ProductDto;
 import by.iba.party.dto.TaskDto;
 import by.iba.party.dto.UserDto;
-import by.iba.party.entity.*;
+import by.iba.party.entity.Party;
+import by.iba.party.entity.Product;
+import by.iba.party.entity.Task;
+import by.iba.party.entity.User;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.mapper.PartyMapper;
 import by.iba.party.mapper.ProductMapper;
 import by.iba.party.mapper.TaskMapper;
 import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.TaskRepository;
 import by.iba.party.service.TaskService;
-import by.iba.party.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +24,14 @@ import java.util.Optional;
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
-    private final UserService userService;
     private final TaskMapper taskMapper = TaskMapper.INSTANCE;
     private final UserMapper userMapper = UserMapper.INSTANCE;
     private final PartyMapper partyMapper = PartyMapper.INSTANCE;
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, UserService userService){
+    public TaskServiceImpl(TaskRepository taskRepository){
         this.taskRepository = taskRepository;
-        this.userService = userService;
     }
 
     @Override
@@ -60,8 +61,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<TaskDto> findById(Integer id) {
-        return Optional.of(taskMapper.toDto(taskRepository.findById(id).get()));
+    public TaskDto findById(Integer id) throws NoEntityException {
+        return taskMapper.toDto(taskRepository.findById(id).orElseThrow(() -> new NoEntityException(" No task with such id: " + id)));
     }
 
     @Override

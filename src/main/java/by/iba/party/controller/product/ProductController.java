@@ -1,6 +1,7 @@
 package by.iba.party.controller.product;
 
 import by.iba.party.dto.ProductDto;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,8 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{id}")
-    public ProductDto getById(@PathVariable Integer id) {
-        return productService.findById(id).orElse(new ProductDto());
+    public ProductDto getById(@PathVariable Integer id) throws NoEntityException {
+        return productService.findById(id);
     }
 
     @PutMapping(value = "/{id}")

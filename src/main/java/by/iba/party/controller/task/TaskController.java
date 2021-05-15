@@ -5,8 +5,11 @@ import by.iba.party.dto.ProductDto;
 import by.iba.party.dto.TaskDto;
 import by.iba.party.dto.UserDto;
 import by.iba.party.entity.TaskStatus;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.service.PartyService;
+import by.iba.party.service.ProductService;
 import by.iba.party.service.TaskService;
+import by.iba.party.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,11 +29,15 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
     private final PartyService partyService;
+    private final ProductService productService;
+    private final UserService userService;
 
     @Autowired
-    public TaskController(TaskService taskService, PartyService partyService) {
+    public TaskController(TaskService taskService, PartyService partyService, ProductService productService, UserService userService) {
         this.taskService = taskService;
         this.partyService = partyService;
+        this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/all")
@@ -39,8 +46,8 @@ public class TaskController {
     }
 
     @GetMapping(value = "/{id}")
-    public TaskDto getById(@PathVariable Integer id) {
-        return taskService.findById(id).orElse(new TaskDto());
+    public TaskDto getById(@PathVariable Integer id) throws NoEntityException {
+        return taskService.findById(id);
     }
 
     @PutMapping(value = "/{id}")
@@ -51,8 +58,9 @@ public class TaskController {
     }
 
     @GetMapping(value = "/by-user/{userId}")
-    public List<TaskDto> findByUser(@PathVariable Integer userId){
-        return taskService.findAllByUser(userId);
+    public List<TaskDto> findByUser(@PathVariable Integer userId) throws NoEntityException {
+        UserDto userDto = userService.findById(userId);
+        return taskService.findAllByUser(userDto);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -62,14 +70,17 @@ public class TaskController {
     }
 
     @PostMapping(value = "/add")
-    public TaskDto addNew(@RequestBody TaskDto taskDto) {
-        taskDto.setParty(partyService.findById(taskDto.getParty().getId()).get());
+    public TaskDto addNew(@RequestBody TaskDto taskDto) throws NoEntityException {
+        PartyDto partyDto = partyService.findById(taskDto.getParty().getId());
+        taskDto.setParty(partyDto);
         return taskService.save(taskDto);
     }
 
     @GetMapping(value = "/party/{partyId}/user/{userId}")
-    public List<TaskDto> getTasksByPartyAndUser(@PathVariable Integer partyId, @PathVariable Integer userId){
-        return taskService.findAllByUserAndParty(userId, partyId);
+    public List<TaskDto> getTasksByPartyAndUser(@PathVariable Integer partyId, @PathVariable Integer userId) throws NoEntityException {
+        PartyDto partyDto = partyService.findById(partyId);
+        UserDto userDto = userService.findById(userId);
+        return taskService.findAllByUserAndParty(userDto, partyDto);
     }
 
     @PostMapping(value = "/{task}/{money}")
@@ -81,10 +92,12 @@ public class TaskController {
         return task;
     }
 
-    @GetMapping(value = "/check/{party}/{product}")
+    @GetMapping(value = "/check/{partyId}/{productId}")
     public TaskDto checkTask(@PathVariable Integer partyId,
-                          @PathVariable Integer productId) {
-        return taskService.checkExistTask(partyId, productId);
+                          @PathVariable Integer productId)  throws NoEntityException {
+        PartyDto party = partyService.findById(partyId);
+        ProductDto product = productService.findById(productId);
+        return taskService.checkExistTask(party, product);
     }
 
 }

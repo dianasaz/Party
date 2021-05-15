@@ -2,6 +2,7 @@ package by.iba.party.service.impl;
 
 import by.iba.party.dto.ProductDto;
 import by.iba.party.entity.Product;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.mapper.ProductMapper;
 import by.iba.party.repository.ProductRepository;
 import by.iba.party.service.ProductService;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,8 +28,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ProductDto> findById(Integer id) {
-        return Optional.of(productMapper.toDto(productRepository.findById(id).get()));
+    public ProductDto findById(Integer id) throws NoEntityException {
+        return productMapper.toDto(productRepository.findById(id).orElseThrow(() -> new NoEntityException(" No product with such id: " + id)));
     }
 
     @Override

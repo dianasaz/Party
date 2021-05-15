@@ -20,8 +20,8 @@ public class PartyDto {
     private PartyStatus status;
     @JsonIgnore
     private List<ProductDto> products;
-//    @JsonIgnore
-//    private List<TaskDto> tasks;
+    @JsonIgnore
+    private List<TaskDto> tasks;
     private String address;
     private Date date;
 }

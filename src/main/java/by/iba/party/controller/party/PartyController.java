@@ -4,9 +4,11 @@ import by.iba.party.dto.PartyDto;
 import by.iba.party.dto.ProductDto;
 import by.iba.party.dto.TaskDto;
 import by.iba.party.dto.UserDto;
+import by.iba.party.exception.NoEntityException;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.ProductService;
 import by.iba.party.service.TaskService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/parties")
 public class PartyController {
@@ -49,8 +51,8 @@ public class PartyController {
     }
 
     @GetMapping(value = "/{id}")
-    public PartyDto  getById(@PathVariable Integer id) {
-        return partyService.findById(id).orElse(new PartyDto());
+    public PartyDto  getById(@PathVariable Integer id) throws NoEntityException {
+        return partyService.findById(id);
     }
 
     @PutMapping(value = "/{id}")
@@ -64,9 +66,7 @@ public class PartyController {
     public List<ProductDto> allProductsForParty(@PathVariable(value = "id") Integer id) {
         List<Integer> productIds = partyService.findProductsForParty(id);
         return productIds.stream()
-                .map(productService::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .map(this::findProductById)
                 .collect(Collectors.toList());
     }
 
@@ -118,7 +118,17 @@ public class PartyController {
     }
 
     @GetMapping(value = "/{party_id}/users")
-    public List<UserDto> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Integer id) {
-        return partyService.findById(id).get().getUsers();
+    public List<UserDto> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Integer id) throws NoEntityException {
+        return partyService.findById(id).getUsers();
+    }
+
+    private ProductDto findProductById(Integer id) {
+        try {
+            return productService.findById(id);
+        }
+        catch (NoEntityException e) {
+            log.debug("No product with such id");
+        }
+        return null;
     }
 }

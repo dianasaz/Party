@@ -42,8 +42,8 @@ public class Party {
     @OneToMany
     private List<Product> products;
 
-//    @OneToMany(mappedBy = "party")
-//    private List<Task> tasks;
+    @OneToMany(mappedBy = "party")
+    private List<Task> tasks;
 
     @Column (name = "address")
     private String address;
