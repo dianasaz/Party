@@ -12,7 +12,6 @@ import by.iba.party.mapper.ProductMapper;
 import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.PartyRepository;
 import by.iba.party.service.PartyService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +19,18 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-@Log4j2
 public class PartyServiceImpl implements PartyService {
     private final PartyRepository partyRepository;
-    private final PartyMapper partyMapper = PartyMapper.INSTANCE;
-    private final UserMapper userMapper = UserMapper.INSTANCE;
-    private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    private final PartyMapper partyMapper;
+    private final UserMapper userMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
-    public PartyServiceImpl(PartyRepository partyRepository) {
+    public PartyServiceImpl(PartyRepository partyRepository, PartyMapper partyMapper, UserMapper userMapper, ProductMapper productMapper) {
         this.partyRepository = partyRepository;
+        this.partyMapper = partyMapper;
+        this.userMapper = userMapper;
+        this.productMapper = productMapper;
     }
 
     @Override

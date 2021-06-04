@@ -19,19 +19,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
-    private final TaskMapper taskMapper = TaskMapper.INSTANCE;
-    private final UserMapper userMapper = UserMapper.INSTANCE;
-    private final PartyMapper partyMapper = PartyMapper.INSTANCE;
-    private final ProductMapper productMapper = ProductMapper.INSTANCE;
+    private final TaskMapper taskMapper;
+    private final UserMapper userMapper;
+    private final PartyMapper partyMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository){
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, UserMapper userMapper, PartyMapper partyMapper, ProductMapper productMapper){
         this.taskRepository = taskRepository;
+        this.taskMapper = taskMapper;
+        this.userMapper = userMapper;
+        this.partyMapper = partyMapper;
+        this.productMapper = productMapper;
     }
 
     @Override

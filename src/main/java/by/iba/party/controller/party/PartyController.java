@@ -79,7 +79,7 @@ public class PartyController {
     public void addProductForParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
         TaskDto taskDto = taskService.checkExistTask(partyDto, productDto);
         if (taskDto != null) {
-            taskDto.setKol(taskDto.getKol() + 1);
+            taskDto.setQuantity(taskDto.getQuantity() + 1);
             taskService.save(taskDto);
         }
         partyService.addProductForParty(partyDto, productDto);
@@ -89,11 +89,11 @@ public class PartyController {
     public void deleteProductForParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
         TaskDto taskDto = taskService.checkExistTask(partyDto, productDto);
         if (taskDto != null) {
-            if (taskDto.getKol() != 1) {
-                taskDto.setKol(taskDto.getKol() - 1);
+            if (taskDto.getQuantity() != 1) {
+                taskDto.setQuantity(taskDto.getQuantity() - 1);
                 taskService.save(taskDto);
             }
-            if (taskDto.getKol() == 1) {
+            if (taskDto.getQuantity() == 1) {
                 productService.deleteById(productDto.getId());
             }
         }
@@ -127,7 +127,7 @@ public class PartyController {
             return productService.findById(id);
         }
         catch (NoEntityException e) {
-            log.debug("No product with such id");
+            log.debug("No product with ID: {} exists", id, e);
         }
         return null;
     }

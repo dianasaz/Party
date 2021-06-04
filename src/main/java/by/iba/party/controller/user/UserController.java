@@ -6,7 +6,6 @@ import by.iba.party.entity.User;
 import by.iba.party.exception.NoEntityException;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.UserService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@Log4j2
 @RequestMapping(value = "/users")
 public class UserController {
     private final UserService userService;

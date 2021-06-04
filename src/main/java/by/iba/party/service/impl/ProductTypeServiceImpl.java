@@ -14,11 +14,12 @@ import java.util.List;
 @Service
 public class ProductTypeServiceImpl implements ProductTypeService {
     private final ProductTypeRepository productTypeRepository;
-    private final ProductTypeMapper productTypeMapper = ProductTypeMapper.INSTANCE;
+    private final ProductTypeMapper productTypeMapper;
 
     @Autowired
-    public ProductTypeServiceImpl(ProductTypeRepository productTypeRepository){
+    public ProductTypeServiceImpl(ProductTypeRepository productTypeRepository, ProductTypeMapper productTypeMapper){
         this.productTypeRepository = productTypeRepository;
+        this.productTypeMapper = productTypeMapper;
     }
 
     @Override

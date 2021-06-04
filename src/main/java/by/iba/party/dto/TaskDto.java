@@ -15,5 +15,5 @@ public class TaskDto {
     private PartyDto party;
     private Double money;
     private TaskStatus status;
-    private Integer kol;
+    private Integer quantity;
 }
