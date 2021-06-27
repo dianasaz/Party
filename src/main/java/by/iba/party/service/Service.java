@@ -1,14 +1,14 @@
 package by.iba.party.service;
 
+import by.iba.party.exception.NoEntityException;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface Service<T> {
     T save(T entity);
 
-    Optional<T> findById(Integer id);
-
-    boolean existsById(Integer id);
+    T findById(Integer id) throws NoEntityException;
 
     List<T> findAll();
 

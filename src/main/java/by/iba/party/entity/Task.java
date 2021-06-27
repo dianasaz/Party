@@ -1,6 +1,5 @@
 package by.iba.party.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,8 +35,8 @@ public class Task {
     @Enumerated(EnumType.ORDINAL)
     private TaskStatus status;
 
-    @Column (name = "kol")
-    private Integer kol;
+    @Column (name = "quantity")
+    private Integer quantity;
 
     @Override
     public String toString() {
@@ -48,7 +47,7 @@ public class Task {
                 ", party=" + party.getId() +
                 ", money=" + money +
                 ", status=" + status +
-                ", kol=" + kol +
+                ", quantity=" + quantity +
                 '}';
     }
 }

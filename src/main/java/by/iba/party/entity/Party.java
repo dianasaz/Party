@@ -1,10 +1,20 @@
 package by.iba.party.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +30,6 @@ public class Party {
     @Column (name = "name")
     private String name;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "party_users",
             joinColumns = {@JoinColumn(name = "party_id")}, inverseJoinColumns = {@JoinColumn(name = "users_id")})
@@ -30,11 +39,9 @@ public class Party {
     @Enumerated(EnumType.ORDINAL)
     private PartyStatus status;
 
-    @JsonIgnore
     @OneToMany
-   private List<Product> products;
+    private List<Product> products;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "party")
     private List<Task> tasks;
 

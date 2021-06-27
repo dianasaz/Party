@@ -1,42 +1,41 @@
 package by.iba.party.service.impl;
 
+import by.iba.party.dto.PartyDto;
+import by.iba.party.dto.ProductDto;
+import by.iba.party.dto.UserDto;
 import by.iba.party.entity.Party;
-import by.iba.party.entity.PartyStatus;
 import by.iba.party.entity.Product;
 import by.iba.party.entity.User;
+import by.iba.party.exception.NoEntityException;
+import by.iba.party.mapper.PartyMapper;
+import by.iba.party.mapper.ProductMapper;
+import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.PartyRepository;
 import by.iba.party.service.PartyService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-@Log4j2
 public class PartyServiceImpl implements PartyService {
     private final PartyRepository partyRepository;
+    private final PartyMapper partyMapper;
+    private final UserMapper userMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
-    public PartyServiceImpl(PartyRepository partyRepository) {
+    public PartyServiceImpl(PartyRepository partyRepository, PartyMapper partyMapper, UserMapper userMapper, ProductMapper productMapper) {
         this.partyRepository = partyRepository;
+        this.partyMapper = partyMapper;
+        this.userMapper = userMapper;
+        this.productMapper = productMapper;
     }
 
     @Override
-    public List<Party> findAllByDate(Date date) {
-        return partyRepository.findAllByDate(date);
-    }
-
-    @Override
-    public List<Party> findAllByStatus(PartyStatus status) {
-        return partyRepository.findAllByStatus(status);
-    }
-
-    @Override
-    public List<Party> findAllByAddressContains(String address) {
-        return partyRepository.findAllByAddressContains(address);
+    public List<PartyDto> findAllByAddressContains(String address) {
+        return partyMapper.toListDto(partyRepository.findAllByAddressContains(address));
     }
 
     @Override
@@ -45,63 +44,57 @@ public class PartyServiceImpl implements PartyService {
     }
 
     @Override
-    public List<Party> findAllByDateAfter(Date date) {
-        return partyRepository.findAllByDateAfter(date);
+    public List<PartyDto> findAllByDateAfter(Date date) {
+        return partyMapper.toListDto(partyRepository.findAllByDateAfter(date));
     }
 
     @Override
-    public void addProductForParty(Party party, Product product) {
-       // partyRepository.addProductForParty(party, product);
+    public void addProductForParty(PartyDto partyDto, ProductDto productDto) {
+        Party party = partyMapper.fromDto(partyDto);
+        Product product = productMapper.fromDto(productDto);
         party.getProducts().add(product);
         partyRepository.save(party);
     }
 
     @Override
-    public void deleteProductForParty(Party party, Product product) {
-        // partyRepository.addProductForParty(party, product);
+    public void deleteProductForParty(PartyDto partyDto, ProductDto productDto) {
+        Party party = partyMapper.fromDto(partyDto);
+        Product product = productMapper.fromDto(productDto);
         party.getProducts().remove(product);
         partyRepository.save(party);
     }
 
     @Override
-    public void addUserToParty(Party party, User user) {
+    public void addUserToParty(PartyDto partyDto, UserDto userDto) {
+        Party party = partyMapper.fromDto(partyDto);
+        User user = userMapper.fromDto(userDto);
         party.getUsers().add(user);
         partyRepository.save(party);
     }
 
     @Override
-    public boolean checkUserToParty(Party party, User user) {
-        return party.getUsers().contains(user);
+    public Integer findCountProductsInParty(Integer partyId, Integer productId) {
+        return partyRepository.findCountProductsInParty(partyId, productId);
     }
 
     @Override
-    public Integer findCountProductsInParty(Party party, Product product) {
-        return partyRepository.findCountProductsInParty(party.getId(), product.getId());
+    public PartyDto save(PartyDto partyDto) {
+        Party party = partyMapper.fromDto(partyDto);
+        return partyMapper.toDto(partyRepository.save(party));
     }
 
     @Override
-    public Party save(Party entity) {
-        return partyRepository.save(entity);
+    public PartyDto findById(Integer id) throws NoEntityException {
+        return partyMapper.toDto(partyRepository.findById(id).orElseThrow(() -> new NoEntityException(" No party with such id: " + id)));
     }
 
     @Override
-    public Optional<Party> findById(Integer id) {
-        return partyRepository.findById(id);
-    }
-
-    @Override
-    public boolean existsById(Integer id) {
-        return partyRepository.existsById(id);
-    }
-
-    @Override
-    public List<Party> findAll() {
-        return partyRepository.findAll();
+    public List<PartyDto> findAll() {
+        return partyMapper.toListDto(partyRepository.findAll());
     }
 
     @Override
     public void deleteById(Integer id) {
-      //  log.log(Level.INFO, "party with id = " + id + " was deleted");
         partyRepository.deleteById(id);
     }
 }

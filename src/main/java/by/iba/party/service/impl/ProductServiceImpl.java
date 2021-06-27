@@ -1,63 +1,41 @@
 package by.iba.party.service.impl;
 
-import by.iba.party.entity.Party;
+import by.iba.party.dto.ProductDto;
 import by.iba.party.entity.Product;
-import by.iba.party.entity.ProductType;
+import by.iba.party.exception.NoEntityException;
+import by.iba.party.mapper.ProductMapper;
 import by.iba.party.repository.ProductRepository;
 import by.iba.party.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository){
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
 
     @Override
-    public List<Product> findAllByNameContains(String name) {
-        return productRepository.findAllByNameContains(name);
+    public ProductDto save(ProductDto productDto) {
+        Product product = productMapper.fromDto(productDto);
+        return productMapper.toDto(productRepository.save(product));
     }
 
     @Override
-    public List<Product> findByPrice(Double price) {
-        return productRepository.findByPrice(price);
+    public ProductDto findById(Integer id) throws NoEntityException {
+        return productMapper.toDto(productRepository.findById(id).orElseThrow(() -> new NoEntityException(" No product with such id: " + id)));
     }
 
     @Override
-    public List<Product> findAllByType(ProductType type) {
-        return productRepository.findAllByType(type);
-    }
-
-//    @Override
-//    public List<Product> findAllByParty(Party party) {
-//        return productRepository.findAllByParty(party);
-//    }
-
-    @Override
-    public Product save(Product entity) {
-        return productRepository.save(entity);
-    }
-
-    @Override
-    public Optional<Product> findById(Integer id) {
-        return productRepository.findById(id);
-    }
-
-    @Override
-    public boolean existsById(Integer id) {
-        return productRepository.existsById(id);
-    }
-
-    @Override
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<ProductDto> findAll() {
+        return productMapper.toListDto(productRepository.findAll());
     }
 
     @Override

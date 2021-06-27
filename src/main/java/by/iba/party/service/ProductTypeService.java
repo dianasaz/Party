@@ -1,6 +1,6 @@
 package by.iba.party.service;
 
-import by.iba.party.entity.ProductType;
+import by.iba.party.dto.ProductTypeDto;
 
-public interface ProductTypeService extends Service<ProductType> {
+public interface ProductTypeService extends Service<ProductTypeDto> {
 }

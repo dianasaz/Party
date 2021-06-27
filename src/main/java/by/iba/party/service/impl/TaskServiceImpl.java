@@ -1,73 +1,76 @@
 package by.iba.party.service.impl;
 
-import by.iba.party.entity.*;
+import by.iba.party.dto.PartyDto;
+import by.iba.party.dto.ProductDto;
+import by.iba.party.dto.TaskDto;
+import by.iba.party.dto.UserDto;
+import by.iba.party.entity.Party;
+import by.iba.party.entity.Product;
+import by.iba.party.entity.Task;
+import by.iba.party.entity.User;
+import by.iba.party.exception.NoEntityException;
+import by.iba.party.mapper.PartyMapper;
+import by.iba.party.mapper.ProductMapper;
+import by.iba.party.mapper.TaskMapper;
+import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.TaskRepository;
 import by.iba.party.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
+    private final TaskMapper taskMapper;
+    private final UserMapper userMapper;
+    private final PartyMapper partyMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository){
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, UserMapper userMapper, PartyMapper partyMapper, ProductMapper productMapper){
         this.taskRepository = taskRepository;
+        this.taskMapper = taskMapper;
+        this.userMapper = userMapper;
+        this.partyMapper = partyMapper;
+        this.productMapper = productMapper;
     }
 
     @Override
-    public List<Task> findAllByParty(Party party) {
-        return taskRepository.findAllByParty(party);
+    public List<TaskDto> findAllByUser(UserDto userInfoDto) {
+        User user = userMapper.fromDto(userInfoDto);
+        return taskMapper.toListDto(taskRepository.findAllByUser(user));
     }
 
     @Override
-    public List<Task> findAllByProduct(Product product) {
-        return taskRepository.findAllByProduct(product);
-    }
-
-
-    @Override
-    public List<Task> findAllByUser(User userInfo) {
-        return taskRepository.findAllByUser(userInfo);
-    }
-
-
-    @Override
-    public List<Task> findAllByStatus(TaskStatus status) {
-        return taskRepository.findAllByStatus(status);
+    public TaskDto checkExistTask(PartyDto partyDto, ProductDto productDto) {
+        Party party = partyMapper.fromDto(partyDto);
+        Product product = productMapper.fromDto(productDto);
+        return taskMapper.toDto(taskRepository.findByPartyAndProduct(party, product));
     }
 
     @Override
-    public Task checkExistTask(Party party, Product product) {
-        return taskRepository.findByPartyAndProduct(party, product);
+    public List<TaskDto> findAllByUserAndParty(UserDto userDto, PartyDto partyDto) {
+        User user = userMapper.fromDto(userDto);
+        Party party = partyMapper.fromDto(partyDto);
+        return taskMapper.toListDto(taskRepository.findAllByUserAndParty(user, party));
     }
 
     @Override
-    public List<Task> findAllByUserAndParty(User user, Party party) {
-        return taskRepository.findAllByUserAndParty(user, party);
+    public TaskDto save(TaskDto taskDto) {
+        Task task = taskMapper.fromDto(taskDto);
+        return taskMapper.toDto(taskRepository.save(task));
     }
 
     @Override
-    public Task save(Task entity) {
-        return taskRepository.save(entity);
+    public TaskDto findById(Integer id) throws NoEntityException {
+        return taskMapper.toDto(taskRepository.findById(id).orElseThrow(() -> new NoEntityException(" No task with such id: " + id)));
     }
 
     @Override
-    public Optional<Task> findById(Integer id) {
-        return taskRepository.findById(id);
-    }
-
-    @Override
-    public boolean existsById(Integer id) {
-        return taskRepository.existsById(id);
-    }
-
-    @Override
-    public List<Task> findAll() {
-        return taskRepository.findAll();
+    public List<TaskDto> findAll() {
+        return taskMapper.toListDto(taskRepository.findAll());
     }
 
     @Override

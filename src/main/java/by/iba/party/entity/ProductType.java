@@ -1,7 +1,5 @@
 package by.iba.party.entity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,10 +16,6 @@ public class ProductType {
 
     @Column(name = "value")
     private String value;
-
-
-    //    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
-//    private List<Product> products;
 
     @Override
     public String toString() {

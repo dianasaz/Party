@@ -61,7 +61,7 @@ create table task
     party_id int    not null,
     product_id    int    not null,
     user_id  int    not null,
-    kol int not null
+    quantity int not null
 )
     ENGINE = INNODB;
 

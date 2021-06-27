@@ -1,29 +1,25 @@
 package by.iba.party.service;
 
-import by.iba.party.entity.*;
+import by.iba.party.dto.PartyDto;
+import by.iba.party.dto.ProductDto;
+import by.iba.party.dto.UserDto;
 
 import java.util.Date;
 import java.util.List;
 
-public interface PartyService extends Service<Party> {
-    List<Party> findAllByDate(Date date);
-
-    List<Party> findAllByStatus(PartyStatus status);
-
-    List<Party> findAllByAddressContains(String address);
+public interface PartyService extends Service<PartyDto> {
+    List<PartyDto> findAllByAddressContains(String address);
 
     List<Integer> findProductsForParty(Integer id);
 
-    List<Party> findAllByDateAfter(Date date);
+    List<PartyDto> findAllByDateAfter(Date date);
 
-    void addProductForParty(Party party, Product product);
+    void addProductForParty(PartyDto partyDto, ProductDto productDto);
 
-    void deleteProductForParty(Party party, Product product);
+    void deleteProductForParty(PartyDto partyDto, ProductDto productDto);
 
-    void addUserToParty(Party party, User user);
+    void addUserToParty(PartyDto partyDto, UserDto userDto);
 
-    boolean checkUserToParty(Party party, User user);
-
-    Integer findCountProductsInParty(Party party, Product product);
+    Integer findCountProductsInParty(Integer partyId, Integer productId);
 
 }
