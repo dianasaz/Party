@@ -5,6 +5,7 @@ import by.iba.party.dto.ProductDto;
 import by.iba.party.dto.TaskDto;
 import by.iba.party.dto.UserDto;
 import by.iba.party.exception.NoEntityException;
+import by.iba.party.service.PartyProductService;
 import by.iba.party.service.PartyService;
 import by.iba.party.service.ProductService;
 import by.iba.party.service.TaskService;
@@ -32,12 +33,14 @@ public class PartyController {
     private final PartyService partyService;
     private final ProductService productService;
     private final TaskService taskService;
+    private final PartyProductService partyProductService;
 
     @Autowired
-    public PartyController(PartyService partyService, ProductService productService, TaskService taskService) {
+    public PartyController(PartyService partyService, ProductService productService, TaskService taskService, PartyProductService partyProductService) {
         this.partyService = partyService;
         this.productService = productService;
         this.taskService = taskService;
+        this.partyProductService = partyProductService;
     }
 
     @GetMapping(value = "/all")
@@ -72,7 +75,7 @@ public class PartyController {
 
     @GetMapping(value = "/{party_id}/products/{product_id}")
     public Integer findCountOfProductOnParty(@PathVariable(value = "party_id") Integer partyId, @PathVariable(value = "product_id") Integer productId) {
-        return partyService.findCountProductsInParty(partyId, productId);
+        return partyProductService.findCountProductsInParty(partyId, productId);
     }
 
     @PostMapping(value = "/{party_id}/add/product/{product_id}")
@@ -82,7 +85,7 @@ public class PartyController {
             taskDto.setQuantity(taskDto.getQuantity() + 1);
             taskService.save(taskDto);
         }
-        partyService.addProductForParty(partyDto, productDto);
+        partyProductService.addProductForParty(partyDto, productDto);
     }
 
     @DeleteMapping(value = "/{party_id}/delete/product/{product_id}")
@@ -97,7 +100,7 @@ public class PartyController {
                 productService.deleteById(productDto.getId());
             }
         }
-        partyService.deleteProductForParty(partyDto, productDto);
+        partyProductService.deleteProductForParty(partyDto, productDto);
     }
 
     @DeleteMapping(value = "/{id}")

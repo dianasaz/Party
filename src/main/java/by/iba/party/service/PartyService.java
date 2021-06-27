@@ -14,12 +14,6 @@ public interface PartyService extends Service<PartyDto> {
 
     List<PartyDto> findAllByDateAfter(Date date);
 
-    void addProductForParty(PartyDto partyDto, ProductDto productDto);
-
-    void deleteProductForParty(PartyDto partyDto, ProductDto productDto);
-
     void addUserToParty(PartyDto partyDto, UserDto userDto);
-
-    Integer findCountProductsInParty(Integer partyId, Integer productId);
 
 }
