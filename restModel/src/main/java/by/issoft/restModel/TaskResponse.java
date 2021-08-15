@@ -1,4 +1,4 @@
-package by.issoft.dto;
+package by.issoft.restModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskDto {
+public class TaskResponse {
     private Integer id;
-    private UserDto user;
-    private ProductDto product;
-    private PartyDto party;
+    private UserResponse user;
+    private ProductResponse product;
+    private PartyResponse party;
     private Double money;
-    private TaskStatusDto status;
+    private TaskStatusResponse status;
     private Integer quantity;
 }

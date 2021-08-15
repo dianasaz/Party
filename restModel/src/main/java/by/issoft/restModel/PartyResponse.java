@@ -1,4 +1,4 @@
-package by.issoft.dto;
+package by.issoft.restModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -11,16 +11,16 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartyDto {
+public class PartyResponse {
     private Integer id;
     private String name;
     @JsonIgnore
-    private List<UserDto> users;
-    private PartyStatusDto status;
+    private List<UserResponse> users;
+    private PartyStatusResponse status;
     @JsonIgnore
-    private List<ProductDto> products;
+    private List<ProductResponse> products;
     @JsonIgnore
-    private List<TaskDto> tasks;
+    private List<TaskResponse> tasks;
     private String address;
     private Date date;
 }
