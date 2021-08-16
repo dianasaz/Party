@@ -1,1 +1,13 @@
 rootProject.name = "party"
+include("dto")
+include("service")
+include("common")
+include("entity")
+include("dao")
+include("mapper")
+include("webapp")
+include("serviceApi")
+include("rest")
+include("restApi")
+include("restModel")
+include("restMapper")
