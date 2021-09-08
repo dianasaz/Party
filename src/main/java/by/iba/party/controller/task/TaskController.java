@@ -11,7 +11,7 @@ import by.iba.party.service.ProductService;
 import by.iba.party.service.TaskService;
 import by.iba.party.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -41,35 +40,39 @@ public class TaskController {
     }
 
     @GetMapping(value = "/all")
+    @PreAuthorize("hasAuthority('read')")
     public List<TaskDto> allTasks() {
         return taskService.findAll();
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('read')")
     public TaskDto getById(@PathVariable Integer id) throws NoEntityException {
         return taskService.findById(id);
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAuthority('write')")
     public void update(@PathVariable Integer id, @RequestBody TaskDto newTaskDto) {
         newTaskDto.setId(id);
         taskService.save(newTaskDto);
     }
 
     @GetMapping(value = "/by-user/{userId}")
+    @PreAuthorize("hasAuthority('read')")
     public List<TaskDto> findByUser(@PathVariable Integer userId) throws NoEntityException {
         UserDto userDto = userService.findById(userId);
         return taskService.findAllByUser(userDto);
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAuthority('write')")
     public void delete(@PathVariable Integer id) {
         taskService.deleteById(id);
     }
 
     @PostMapping(value = "/add")
+    @PreAuthorize("hasAuthority('write')")
     public TaskDto addNew(@RequestBody TaskDto taskDto) throws NoEntityException {
         PartyDto partyDto = partyService.findById(taskDto.getParty().getId());
         taskDto.setParty(partyDto);
@@ -77,6 +80,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "/party/{partyId}/user/{userId}")
+    @PreAuthorize("hasAuthority('read')")
     public List<TaskDto> getTasksByPartyAndUser(@PathVariable Integer partyId, @PathVariable Integer userId) throws NoEntityException {
         PartyDto partyDto = partyService.findById(partyId);
         UserDto userDto = userService.findById(userId);
@@ -84,6 +88,7 @@ public class TaskController {
     }
 
     @PostMapping(value = "/{task}/{money}")
+    @PreAuthorize("hasAuthority('write')")
     public TaskDto CompleteTask(@PathVariable(value = "money") String money, @PathVariable(value = "task") TaskDto task) {
         Double m = Double.parseDouble(money);
         task.setMoney(m);
@@ -93,6 +98,7 @@ public class TaskController {
     }
 
     @GetMapping(value = "/check/{partyId}/{productId}")
+    @PreAuthorize("hasAuthority('read')")
     public TaskDto checkTask(@PathVariable Integer partyId,
                           @PathVariable Integer productId)  throws NoEntityException {
         PartyDto party = partyService.findById(partyId);
