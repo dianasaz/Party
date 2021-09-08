@@ -10,7 +10,7 @@ import by.iba.party.service.ProductService;
 import by.iba.party.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -41,28 +40,32 @@ public class PartyController {
     }
 
     @GetMapping(value = "/all")
+    @PreAuthorize("hasAuthority('read')")
     public List<PartyDto> allParties() {
         return partyService.findAllByDateAfter(new Date());
     }
 
     @GetMapping(value = "/by-address")
+    @PreAuthorize("hasAuthority('read')")
     public List<PartyDto> allPartiesByAddress(@RequestBody String address) {
         return partyService.findAllByAddressContains(address);
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAuthority('read')")
     public PartyDto  getById(@PathVariable Integer id) throws NoEntityException {
         return partyService.findById(id);
     }
 
     @PutMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAuthority('write')")
     public void update(@PathVariable Integer id, @RequestBody PartyDto partyDto) {
         partyDto.setId(id);
         partyService.save(partyDto);
     }
 
     @GetMapping(value = "/{id}/products")
+    @PreAuthorize("hasAuthority('read')")
     public List<ProductDto> allProductsForParty(@PathVariable(value = "id") Integer id) {
         List<Integer> productIds = partyService.findProductsForParty(id);
         return productIds.stream()
@@ -71,11 +74,13 @@ public class PartyController {
     }
 
     @GetMapping(value = "/{party_id}/products/{product_id}")
+    @PreAuthorize("hasAuthority('read')")
     public Integer findCountOfProductOnParty(@PathVariable(value = "party_id") Integer partyId, @PathVariable(value = "product_id") Integer productId) {
         return partyService.findCountProductsInParty(partyId, productId);
     }
 
     @PostMapping(value = "/{party_id}/add/product/{product_id}")
+    @PreAuthorize("hasAuthority('write')")
     public void addProductForParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
         TaskDto taskDto = taskService.checkExistTask(partyDto, productDto);
         if (taskDto != null) {
@@ -86,6 +91,7 @@ public class PartyController {
     }
 
     @DeleteMapping(value = "/{party_id}/delete/product/{product_id}")
+    @PreAuthorize("hasAuthority('write')")
     public void deleteProductForParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "product_id") ProductDto productDto) {
         TaskDto taskDto = taskService.checkExistTask(partyDto, productDto);
         if (taskDto != null) {
@@ -101,23 +107,25 @@ public class PartyController {
     }
 
     @DeleteMapping(value = "/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAuthority('write')")
     public void delete(@PathVariable Integer id) {
         partyService.deleteById(id);
     }
 
     @PostMapping(value = "/add")
-    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('write')")
     public PartyDto addNew(@RequestBody PartyDto partyDto) {
         return partyService.save(partyDto);
     }
 
     @PostMapping(value = "/{party_id}/add/user/{user_id}")
+    @PreAuthorize("hasAuthority('write')")
     public void addUserToParty(@PathVariable(value = "party_id") PartyDto partyDto, @PathVariable(value = "user_id") UserDto userInfoDto) {
         partyService.addUserToParty(partyDto, userInfoDto);
     }
 
     @GetMapping(value = "/{party_id}/users")
+    @PreAuthorize("hasAuthority('read')")
     public List<UserDto> getAllUsersOnTHisParty(@PathVariable(value = "party_id") Integer id) throws NoEntityException {
         return partyService.findById(id).getUsers();
     }

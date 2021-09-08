@@ -7,9 +7,11 @@ import by.iba.party.mapper.UserMapper;
 import by.iba.party.repository.UserRepository;
 import by.iba.party.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,6 +43,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Integer> getUsersParties(UserDto userDto){
         return userRepository.getUsersParties(userDto.getId());
+    }
+
+    @Override
+    public UserDto findByLogin(String login) {
+        return userMapper.toDto(userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("User doesn't exists")));
     }
 
     @Override
